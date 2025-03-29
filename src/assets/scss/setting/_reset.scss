@@ -1,0 +1,148 @@
+/*
+reset.css는 웹 페이지에서 브라우저별로 기본적으로 제공되는 스타일을 초기화하거나 재정의하는 스타일 시트입니다. 
+브라우저 간에 기본 스타일이 다르거나 렌더링 동작이 다를 수 있기 때문에, 이를 보완하고 브라우저 간의 일관된 디자인을 유지하거나 조작할 때 사용됩니다.
+reset.css의 주요 목표는 브라우저의 스타일을 초기화하여 일관된 시작 지점을 제공하거나, 원하는 디자인을 구현하기 위해 필요한 스타일을 정의하는 것입니다. 
+일반적으로 모든 HTML 요소에 대한 여러 속성(마진, 패딩, 텍스트 스타일 등)을 재설정하거나 일반적으로 제공되는 레이아웃과 스타일을 재정의합니다.
+
+*/
+
+
+// border-box 초기화
+*,
+*:before,
+*:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+// 공백 초기화
+body,
+button,
+dd,
+dl,
+dt,
+fieldset,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+legend,
+li,
+ol,
+p,
+select,
+table,
+td,
+textarea,
+th,
+ul,
+figure,
+figcaption {
+    margin: 0;
+    padding: 0;
+}
+
+// 폰트 초기화 
+body,
+button,
+input,
+select,
+table,
+textarea {
+    font-family: var(--mainfont-nanum), var(--mainfont-nexon), "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", helvetica, sans-serif;
+}
+
+// 링크 초기화
+a,
+a:hover,
+a:focus {
+    color: inherit;
+    text-decoration: none;
+}
+
+// 스타일 초기화
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: normal;
+}
+
+ul {
+    list-style: none;
+}
+
+em,
+address {
+    font-style: normal;
+}
+
+strong {
+    font-weight: normal;
+}
+
+img {
+    vertical-align: top;
+    width: 100%;
+}
+
+// 디자인 초기화
+input,
+textarea,
+button,
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0;
+    font-size: 16px;
+    border: 0;
+}
+
+// 스킵메뉴
+#skip a {
+    position: absolute;
+    left: 10px;
+    top: -92px;
+    z-index: 100000;
+    font-size: 1rem;
+    padding: 10px 30px;
+    color: var(--white);
+    background: var(--black);
+}
+
+#skip a:focus,
+#skip a:active {
+    top: 10px;
+}
+
+// 글씨 숨기기
+.blind {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+// IR(Image Replacement)
+// 의미가 포함되어 있는 image를 배경으로 표현하고, 텍스트는 보이지 않게 설정하는 방법입니다.
+.ir {
+    display: block;
+    overflow: hidden;
+    font-size: 0;
+    line-height: 0;
+    text-indent: -9999px;
+    white-space: nowrap;
+}
