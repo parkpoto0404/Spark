@@ -24,24 +24,6 @@ const Login = ({loginCheck}) => {
 
     e.preventDefault();
 
-    /*
-    for(let i=0; i<user.length; i++){
-
-      if(user[i].id === id && user[i].pwd === pwd ){
-        loginCheck(true);
-        alert('로그인 됐다!!!!')
-        navi("/")
-        
-      }else{
-        alert('아디 비번 잊어버렸냐 멍청아?!!!')
-        setId("");
-        setPwd("");
-        //console.log('userId : ',idCheck.current.value, 'userPwd : ', pwdCheck.current.value)
-        //console.log('Id : ',user.id , 'Pwd : ', user.pwd)
-      }
-    }
-      */
-
     try {
       const res = await fetch('http://localhost:8888/spark/api/login', {
         method: 'POST',
@@ -66,6 +48,8 @@ const Login = ({loginCheck}) => {
 
       alert('로그인 성공!');
       navi('/');
+      console.log('토큰 : ',token,'데이터 : ',data)
+
     } catch (err) {
       alert('아이디 혹은 비밀번호가 잘못되었습니다!');
       setId('');

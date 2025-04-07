@@ -15,18 +15,33 @@ import Main from './component/section/Main';
 import Footer from './component/section/Footer';
 
 
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 
 function HeaderLayout() {
   const location = useLocation();
   //console.log(location.pathname)
-  return location.pathname !== "/login" ? <Header /> : null;
+  return location.pathname !== "/login" ? <Header /> : null; 
+  // 로그인화면일때/아닐때 나오는 헤더부분을 지정하는 구문
 }
+
 
 function App() {
 
   const [loginCheck, setLoginCheck] = useState(false); // 수정변수도 속성데이터로 보낼 수 있다!
+  const [loading, setLoading] = useState(true); // 로딩 완료 여부 추가
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      setLoginCheck(true);
+    }
+    setLoading(false); // 로딩 완료 표시
+  }, []);
+
+
+  
+  if (loading) return null; // ⭐️ 로딩 중엔 아무 것도 렌더링하지 않음 (혹은 로딩 화면)
 
 
   return (
