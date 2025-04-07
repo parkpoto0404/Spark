@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Main = () => {
+const Like = () => {
   return (
     <div>
-      메인
+      좋아요
     </div>
   )
 }
 
-export default Main
+export default Like

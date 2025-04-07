@@ -1,0 +1,78 @@
+.label_only{
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 1px !important;
+    height: 1px !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    overflow: hidden;
+}
+.login_container {
+    background-color: white;
+    padding: 2rem;
+    width: 100%;
+    max-width: 450px;
+    height: 92vh;
+  }
+  .login_container h2 {
+    text-align: center;
+    color: #f06292;
+    margin-bottom: 5rem;
+  }
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-weight: bold;
+  }
+  input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 3rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  button {
+    width: 100%;
+    background-color: #f06292;
+    color: white;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #ec407a;
+  }
+
+  .link-group {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1rem;
+  }
+  .link-group a {
+    color: #f06292;
+    text-decoration: none;
+    font-weight: bold;
+    
+  }
+
+  @media (max-width: 500px) {
+    .login_container {
+      padding: 1.5rem;
+    }
+    .login_container h2 {
+      font-size: 1.5rem;
+    }
+    input, button {
+      font-size: 1rem;
+    }
+  }

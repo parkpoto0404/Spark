@@ -6,3 +6,10 @@
 @import "setting/mixin";
 @import "setting/reset";
 @import "setting/var";
+
+// section
+@import "section/layout";
+
+// components
+@import "components/home.scss";
+@import "components/login.scss";
