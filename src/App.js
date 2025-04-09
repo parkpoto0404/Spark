@@ -29,20 +29,19 @@ function HeaderLayout() {
 function App() {
 
   const [loginCheck, setLoginCheck] = useState(false); // 수정변수도 속성데이터로 보낼 수 있다!
-  const [loading, setLoading] = useState(true); // 로딩 완료 여부 추가
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('jwt');
     if (token) {
+      // 👉 여기서 실제 서버에 토큰 유효성 검사를 보내면 더 안전!
       setLoginCheck(true);
     }
-    setLoading(false); // 로딩 완료 표시
+    setLoading(false);
   }, []);
 
-
+  if (loading) return <div>로딩 중...</div>;
   
-  if (loading) return null; // ⭐️ 로딩 중엔 아무 것도 렌더링하지 않음 (혹은 로딩 화면)
-
 
   return (
     <div className="App">
@@ -51,17 +50,17 @@ function App() {
           <HeaderLayout/>
           <Main>
             <Routes>
-              <Route path='/' element={ loginCheck ? <Home /> : <Navigate to="/login" />} />
+              <Route path='/' element={ loginCheck ? <Home /> : <Navigate to="/login" replace/>} />
               <Route path='/login' element={<Login loginCheck={setLoginCheck} />} /> 
               <Route path='/pwdfind' element={<Pwdfind />} />
               <Route path='/signup' element={<Signup />} />
-              <Route path='/like' element={<Like />} />
-              <Route path='/mypage' element={<Mypage />} />
-              <Route path='/chat' element={<Chat />} />
+              <Route path='/like' element={loginCheck ? <Like /> : <Navigate to="/login" replace/>} />
+              <Route path='/mypage' element={loginCheck ? <Mypage /> : <Navigate to="/login" replace/>} />
+              <Route path='/chat' element={loginCheck ? <Chat /> : <Navigate to="/login" replace/>} />
               <Route path='*' element={<Not />} />
             </Routes>
           </Main>
-          <Footer/>
+          <Footer loginCheck={loginCheck}/>
         </BrowserRouter>
 
     </div>

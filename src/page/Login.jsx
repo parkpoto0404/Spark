@@ -6,11 +6,6 @@ import { useNavigate , Link} from "react-router-dom";
 
 const Login = ({loginCheck}) => {
 
-  const user = [{
-    id : '혜선',
-    pwd : '1234',
-  }]
-
 
   const [id , setId] = useState(""); 
   const [pwd , setPwd] = useState("");
