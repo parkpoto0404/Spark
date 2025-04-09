@@ -31,16 +31,37 @@ function App() {
   const [loginCheck, setLoginCheck] = useState(false); // 수정변수도 속성데이터로 보낼 수 있다!
   const [loading, setLoading] = useState(true);
 
+  
   useEffect(() => {
     const token = localStorage.getItem('jwt');
-    if (token) {
-      // 👉 여기서 실제 서버에 토큰 유효성 검사를 보내면 더 안전!
-      setLoginCheck(true);
-    }
-    setLoading(false);
+    console.log("token : ",token)
+
+    fetch('http://localhost:8888/spark/api/validate', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(res => res.json())
+    
+    .then(data => {
+      if (data.valid) {
+        setLoginCheck(true);
+      } else {
+        setLoginCheck(false);
+        localStorage.removeItem('jwt');
+      }
+    })
+    .catch(() => {
+      setLoginCheck(false);
+      localStorage.removeItem('jwt');
+    })
+    .finally(() => {
+      setLoading(false);
+    });
   }, []);
 
-  if (loading) return <div>로딩 중...</div>;
+ 
   
 
   return (
