@@ -33,11 +33,12 @@ const Login = ({loginCheck}) => {
       }
 
       const data = await res.json();
-      const token = data.token;
+      const token = data.token.accessToken;
 
+      
       // JWT를 localStorage에 저장
       localStorage.setItem('jwt', token);
-
+      console.log('저장된 jwt:', localStorage.getItem('jwt'));
       // 로그인 상태 변경
       loginCheck(true);
 

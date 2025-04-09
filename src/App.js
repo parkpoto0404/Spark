@@ -30,39 +30,37 @@ function App() {
 
   const [loginCheck, setLoginCheck] = useState(false); // 수정변수도 속성데이터로 보낼 수 있다!
   const [loading, setLoading] = useState(true);
-
-  
   useEffect(() => {
     const token = localStorage.getItem('jwt');
-    console.log("token : ",token)
+    console.log('🎯 현재 토큰:', token);
+    if (!token) {
+      setLoginCheck(false);
+      setLoading(false);
+      return;
+    }
 
     fetch('http://localhost:8888/spark/api/validate', {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
       }
     })
-    .then(res => res.json())
-    
-    .then(data => {
-      if (data.valid) {
-        setLoginCheck(true);
-      } else {
+      .then(res => res.json())
+      .then(data => {
+        if (data.valid) {
+          setLoginCheck(true);
+        } else {
+          setLoginCheck(false);
+          localStorage.removeItem('jwt');
+        }
+      })
+      .catch(() => {
         setLoginCheck(false);
-        localStorage.removeItem('jwt');
-      }
-    })
-    .catch(() => {
-      setLoginCheck(false);
-      localStorage.removeItem('jwt');
-    })
-    .finally(() => {
-      setLoading(false);
-    });
+      }).finally(() => {
+        setLoading(false);
+      });
   }, []);
-
- 
-  
 
   return (
     <div className="App">
@@ -71,7 +69,7 @@ function App() {
           <HeaderLayout/>
           <Main>
             <Routes>
-              <Route path='/' element={ loginCheck ? <Home /> : <Navigate to="/login" replace/>} />
+              <Route path='/' element={ loading ? <div>로딩 중...</div> : loginCheck ? <Home /> : <Navigate to="/login" replace />} />
               <Route path='/login' element={<Login loginCheck={setLoginCheck} />} /> 
               <Route path='/pwdfind' element={<Pwdfind />} />
               <Route path='/signup' element={<Signup />} />
