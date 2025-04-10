@@ -26,6 +26,7 @@ const Login = ({loginCheck}) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ memId : id, memPwd: pwd }),
+        credentials: 'include', // 쿠키를 포함시킴
       });
 
       if (!res.ok) {
