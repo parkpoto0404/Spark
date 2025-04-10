@@ -91,7 +91,7 @@ const Login = ({loginCheck}) => {
           <button type="submit">로그인</button>
         </form>
 
-        <div class="link-group">
+        <div className="link-group">
           <Link to="/signup">회원가입</Link>
           <Link to="/pwdfind">비밀번호 찾기</Link>
         </div>
