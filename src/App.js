@@ -32,20 +32,21 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('jwt');
-    console.log('현재 토큰:', token);
-    if (!token) {
+    const accessToken = localStorage.getItem('jwt');
+    const refreshToken = localStorage.getItem('refreshToken');
+  
+    if (!accessToken) {
       setLoginCheck(false);
       setLoading(false);
       return;
     }
-
+  
+    // 액세스 토큰 유효성 검사
     fetch('http://localhost:8888/spark/api/validate', {
       method: 'GET',
-      credentials: 'include', // 쿠키를 포함시킴
-
+      credentials: 'include', // 쿠키 포함
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       }
     })
@@ -54,17 +55,43 @@ function App() {
         if (data.valid) {
           setLoginCheck(true);
         } else {
-          setLoginCheck(false);
-          localStorage.removeItem('jwt');
+          // 액세스 토큰 만료시 리프레시 토큰을 사용해 새 액세스 토큰 발급
+          fetch('http://localhost:8888/spark/api/refresh', {
+            method: 'POST',
+            credentials: 'include', // 쿠키 포함
+            headers: {
+              'Authorization': `Bearer ${refreshToken}`,
+              'Content-Type': 'application/json',
+            },
+          })
+            .then(res => res.json())
+            .then(data => {
+              if (data.accessToken) {
+                localStorage.setItem('jwt', data.accessToken);  // 새 액세스 토큰 저장
+                setLoginCheck(true);
+              } else {
+                setLoginCheck(false);
+                localStorage.removeItem('jwt');
+                localStorage.removeItem('refreshToken');
+              }
+            })
+            .catch(() => {
+              setLoginCheck(false);
+              localStorage.removeItem('jwt');
+              localStorage.removeItem('refreshToken');
+            })
+            .finally(() => {
+              setLoading(false);
+            });
         }
       })
       .catch(() => {
         setLoginCheck(false);
-      }).finally(() => {
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, []);
-
 
 
 
