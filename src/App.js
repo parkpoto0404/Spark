@@ -17,7 +17,6 @@ import Footer from './component/section/Footer';
 import PrivateRoute from './component/route/PrivateRoute';
 
 
-
 function HeaderLayout() {
   const location = useLocation();
   return location.pathname !== "/login" ? <Header /> : null;

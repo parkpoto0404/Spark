@@ -7,8 +7,7 @@ const Mypage = () => {
   const navigate = useNavigate();
   const { setLoginCheck } = useAuthContext();
   const refreshToken = localStorage.getItem('refreshToken');
-
-  
+  const accessToken = localStorage.getItem('jwt');
   const logingOut= async ()=>{
     
     const confirmLogout = window.confirm('로그아웃 하시겠습니까?');
@@ -18,12 +17,7 @@ const Mypage = () => {
       try{
         const res = await fetch('http://localhost:8888/spark/api/logout', {
           method : 'POST',
-          headers : {
-            'Content-Type' : 'application/json', // json 형식으로 보내기
-          },
-          body : JSON.stringify({refreshToken}),
           credentials : 'include'
-  
         });
 
         if(res.ok){
