@@ -9,21 +9,29 @@ const Signup = () => {
   const navi = useNavigate();
 
   const sms = async () => {
+
+    const phoneRegex = /^01[0-9]{8,9}$/;
+
+    if (!phoneRegex.test(phone)) {
+      alert("잘못된 번호 형식입니다.");
+      return;
+    }
+
     try {
-      console.log(phone);
       const res = await fetch('http://localhost:8888/spark/api/sms', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json"
         },
-        body: phone
+        body: phone 
       });
 
       if (!res.ok) throw new Error("인증 요청 실패");
-
+      
       const data = await res.text();
       setSmsResult(data); // 서버에서 받은 인증번호라고 가정
       setShowSmsInput(true);
+      alert('인증번호가 전송되었습니다.')
     } catch (err) {
       console.log('인증실패', err);
     }
@@ -54,16 +62,21 @@ const Signup = () => {
         <button type="button" onClick={sms}>인증발송</button>
 
         {showSmsInput && (
-          <input
-            type="text"
-            placeholder='인증번호 입력'
-            value={smsNumber}
-            onChange={(e) => setSmsNumber(e.target.value)}
-          />
+          <>
+            <input
+              type="text"
+              placeholder='인증번호 입력'
+              value={smsNumber}
+              onChange={(e) => setSmsNumber(e.target.value)}
+            />
+            <button type='submit'>인증</button>
+          </>
         )}
 
-        <button type='submit'>가입</button>
       </form>
+
+
+
     </div>
   );
 }
