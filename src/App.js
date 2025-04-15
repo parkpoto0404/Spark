@@ -1,4 +1,8 @@
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider, useAuthContext } from './context/AuthContext'; 
+import { useLocation } from 'react-router-dom';
+
 import Home from './page/Home';
 import Login from './page/Login';
 import Pwdfind from './page/Pwdfind';
@@ -6,104 +10,81 @@ import Signup from './page/Signup';
 import Like from './page/Like';
 import Mypage from './page/Mypage';
 import Chat from './page/Chat';
-
 import Not from './page/Not';
 import Header from './component/section/Header';
 import Main from './component/section/Main';
 import Footer from './component/section/Footer';
+import PrivateRoute from './component/route/PrivateRoute';
 
-import { useState, useEffect } from 'react';
+
 
 function HeaderLayout() {
   const location = useLocation();
   return location.pathname !== "/login" ? <Header /> : null;
 }
 
-function App() {
-  const [loginCheck, setLoginCheck] = useState(false);
-  const [loading, setLoading] = useState(true);
+function AppRoutes() {
+  const { loginCheck, loading } = useAuthContext();
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem('jwt');
+  // 🔥 핵심: loginCheck 판단이 끝나기 전에는 라우터 자체 렌더링 안함
+  if (loading || loginCheck === null) {
+    return <div>앱 초기화 중...</div>;
+  }
 
-    if (!accessToken) {
-      setLoginCheck(false);
-      setLoading(false);
-      return;
-    }
-
-    fetch('http://localhost:8888/spark/api/validate', {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      }
-    })
-      .then(res => res.json())
-      .then(async (data) => {
-        if (data.valid) {
-          setLoginCheck(true);
-        } else {
-          // 🔧 accessToken이 만료되었을 경우 refresh 요청
-          try {
-            const res = await fetch('http://localhost:8888/spark/api/refresh', {
-              method: 'POST',
-              credentials: 'include',
-            });
-            const refreshData = await res.json();
-            if (refreshData.accessToken) {
-              localStorage.setItem('jwt', refreshData.accessToken); // 🔧 새 토큰 저장
-              setLoginCheck(true);
-            } else {
-              setLoginCheck(false);
-              localStorage.removeItem('jwt');
-            }
-          } catch (error) {
-            setLoginCheck(false);
-            localStorage.removeItem('jwt');
-          }
-        }
-      })
-      .catch(() => {
-        setLoginCheck(false);
-        localStorage.removeItem('jwt');
-      })
-      .finally(() => {
-        setLoading(false); // 🔧 모든 토큰 처리 후에만 로딩 false
-      });
-  }, []);
 
   return (
-    <div className="App">
+    <Routes>
+        <Route path='/login' element={<Login />} />
+        <Route path='/pwdfind' element={<Pwdfind />} />
+        <Route path='/signup' element={<Signup />} />
+      <Route
+        path='/'
+        element={
+          <PrivateRoute loginCheck={loginCheck} loading={loading}>
+            <Home />
+          </PrivateRoute>
+        }
+      />
+        <Route
+        path='/like'
+        element={
+          <PrivateRoute loginCheck={loginCheck} loading={loading}>
+            <Like />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path='/mypage'
+        element={
+          <PrivateRoute loginCheck={loginCheck} loading={loading}>
+            <Mypage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path='/chat'
+        element={
+          <PrivateRoute loginCheck={loginCheck} loading={loading}>
+            <Chat />
+          </PrivateRoute>
+        }
+      />
+      <Route path='*' element={<Not />} />
+    </Routes>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
       <BrowserRouter>
         <HeaderLayout />
         <Main>
-          <Routes>
-            <Route
-              path='/'
-              element={
-                loading ? (
-                  <div>로딩 중...</div> // 🔧 로딩 중일 때는 화면 전환 X
-                ) : loginCheck ? (
-                  <Home />
-                ) : (
-                  <Navigate to="/login" replace />
-                )
-              }
-            />
-            <Route path='/login' element={<Login loginCheck={setLoginCheck} />} />
-            <Route path='/pwdfind' element={<Pwdfind />} />
-            <Route path='/signup' element={<Signup />} />
-            <Route path='/like' element={loginCheck ? <Like /> : <Navigate to="/login" replace />} />
-            <Route path='/mypage' element={loginCheck ? <Mypage /> : <Navigate to="/login" replace />} />
-            <Route path='/chat' element={loginCheck ? <Chat /> : <Navigate to="/login" replace />} />
-            <Route path='*' element={<Not />} />
-          </Routes>
+          <AppRoutes />
         </Main>
-        <Footer loginCheck={loginCheck} />
+        <Footer />
       </BrowserRouter>
-    </div>
+    </AuthProvider>
   );
 }
 
