@@ -10,17 +10,18 @@ const Signup = () => {
 
   const sms = async () => {
     try {
+      console.log(phone);
       const res = await fetch('http://localhost:8888/spark/api/sms', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ phone })
+        body: phone
       });
 
       if (!res.ok) throw new Error("인증 요청 실패");
 
-      const data = await res.json();
+      const data = await res.text();
       setSmsResult(data); // 서버에서 받은 인증번호라고 가정
       setShowSmsInput(true);
     } catch (err) {
