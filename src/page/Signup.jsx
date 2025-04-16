@@ -51,7 +51,7 @@ const Signup = () => {
 
   return (
     <div>
-      <h2>회원가입</h2>
+      <h2>핸드폰 인증</h2>
       <form onSubmit={handleSignup}>
         <input
           type="text"

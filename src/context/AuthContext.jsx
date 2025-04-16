@@ -10,6 +10,8 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const accessToken = localStorage.getItem('jwt'); // JWT 토큰을 localStorage에서 가져옴
 
+    console.log("accessToken : ",accessToken);
+
     if (!accessToken) {
       setLoginCheck(false);
       setLoading(false);

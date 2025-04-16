@@ -17,9 +17,15 @@ import Footer from './component/section/Footer';
 import PrivateRoute from './component/route/PrivateRoute';
 
 
+
 function HeaderLayout() {
   const location = useLocation();
   return location.pathname !== "/login" ? <Header /> : null;
+}
+
+function FooterLayout() {
+  const location = useLocation();
+  return location.pathname !== "/signup" ? <Footer /> : null;
 }
 
 function AppRoutes() {
@@ -27,7 +33,7 @@ function AppRoutes() {
 
   // 🔥 핵심: loginCheck 판단이 끝나기 전에는 라우터 자체 렌더링 안함
   if (loading || loginCheck === null) {
-    return <div>앱 초기화 중...</div>;
+    return <div className="loading-spinner"></div>;
   }
 
 
@@ -81,7 +87,7 @@ function App() {
         <Main>
           <AppRoutes />
         </Main>
-        <Footer />
+        <FooterLayout/>
       </BrowserRouter>
     </AuthProvider>
   );
