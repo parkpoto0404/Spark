@@ -1,83 +1,80 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
-// AuthContext를 사용하여 로그인 상태를 관리합니다.
 const AuthContext = createContext();
 
+let refreshPromise = null; // 🔒 리프레시 중이면 공유할 Promise
+
 export const AuthProvider = ({ children }) => {
-  const [loginCheck, setLoginCheck] = useState(false); // 로그인 여부
-  const [loading, setLoading] = useState(true); // 로딩 상태
+  const [loginCheck, setLoginCheck] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('jwt'); // JWT 토큰을 localStorage에서 가져옴
+    initAuth();
+  }, []);
 
-    console.log("accessToken : ",accessToken);
+  const initAuth = async () => {
+    const accessToken = localStorage.getItem('jwt');
+    console.log('🔑 JWT 초기값:', accessToken);
 
     if (!accessToken) {
+      console.log('🚫 accessToken 없음');
       setLoginCheck(false);
       setLoading(false);
-      return; // 토큰이 없으면 바로 종료
+      return;
     }
 
-    const validateToken = async () => {
-      
-      try {
-        const res = await fetch('http://localhost:8888/spark/api/validate', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-        });
+    try {
+      const res = await fetch('http://localhost:8888/spark/api/validate', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
 
-        if (!res.ok) {
-          throw new Error('유효하지 않은 토큰');
+      const data = await res.json();
+      console.log('✅ validate 응답:', data);
+
+      if (res.ok && data.valid) {
+        setLoginCheck(true);
+      } else {
+        console.log('⚠️ 토큰 만료 → 리프레시 시도');
+
+        // ✅ refresh 요청이 이미 진행 중이라면 대기
+        if (!refreshPromise) {
+          refreshPromise = fetch('http://localhost:8888/spark/api/refresh', {
+            method: 'POST',
+            credentials: 'include',
+          }).then((res) => res.json());
         }
 
-        const data = await res.json();
+        const refreshData = await refreshPromise;
+        refreshPromise = null; // 💥 Promise 초기화
 
-        if (data.valid) {
+        if (refreshData.accessToken) {
+          console.log('🆕 새 토큰 저장:', refreshData.accessToken);
+          localStorage.setItem('jwt', refreshData.accessToken);
           setLoginCheck(true);
         } else {
-          // 토큰 만료 시 refresh 요청
-          try {
-            const refreshRes = await fetch('http://localhost:8888/spark/api/refresh', {
-              method: 'POST',
-              credentials: 'include',
-            });
-
-            if (!refreshRes.ok) {
-              throw new Error('리프레시 토큰 요청 실패');
-            }
-
-            const refreshData = await refreshRes.json();
-            if (refreshData.accessToken) {
-              localStorage.setItem('jwt', refreshData.accessToken);
-              setLoginCheck(true);
-            } else {
-              setLoginCheck(false);
-              localStorage.removeItem('jwt');
-            }
-          } catch (err) {
-            console.error('리프레시 토큰 오류:', err);
-            setLoginCheck(false);
-            localStorage.removeItem('jwt');
-          }
+          console.log('❌ refresh 실패');
+          localStorage.removeItem('jwt');
+          setLoginCheck(false);
         }
-      } catch (err) {
-        console.error('토큰 유효성 검사 오류:', err);
-        setLoginCheck(false);
-        localStorage.removeItem('jwt');
-      } finally {
-        setLoading(false); // 모든 처리가 끝나면 로딩을 false로 설정
       }
-    };
-
-    validateToken();
-  }, []); // 페이지 로드 시 한 번만 실행
+    } catch (err) {
+      console.error('🔥 예외 발생:', err);
+      localStorage.removeItem('jwt');
+      setLoginCheck(false);
+    } finally {
+      // ✅ 렌더링 타이밍 지연
+      await new Promise((res) => setTimeout(res, 200));
+      setLoading(false);
+    }
+  };
 
   return (
-    <AuthContext.Provider value={{ loginCheck, setLoginCheck, loading }}>
+    <AuthContext.Provider value={{ loginCheck, loading, setLoginCheck }}>
       {children}
     </AuthContext.Provider>
   );

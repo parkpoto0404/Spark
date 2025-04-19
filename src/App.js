@@ -23,15 +23,17 @@ function HeaderLayout() {
   return location.pathname !== "/login" ? <Header /> : null;
 }
 
+/*
 function FooterLayout() {
   const location = useLocation();
   return location.pathname !== "/signup" ? <Footer /> : null;
 }
+*/
 
 function AppRoutes() {
   const { loginCheck, loading } = useAuthContext();
 
-  // 🔥 핵심: loginCheck 판단이 끝나기 전에는 라우터 자체 렌더링 안함
+  // loginCheck 판단이 끝나기 전에는 라우터 자체 렌더링 안함
   if (loading || loginCheck === null) {
     return <div className="loading-spinner"></div>;
   }
@@ -87,7 +89,7 @@ function App() {
         <Main>
           <AppRoutes />
         </Main>
-        <FooterLayout/>
+        <Footer />
       </BrowserRouter>
     </AuthProvider>
   );

@@ -100,7 +100,7 @@ button,
 select {
     -webkit-appearance: none;
     -moz-appearance: none;
-    appearance: none;
+    appearance: none; // 체크박스 같은 이용할때 auto로 변경
     border-radius: 0;
     font-size: 16px;
     border: 0;
