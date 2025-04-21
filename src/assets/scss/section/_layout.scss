@@ -1,5 +1,5 @@
 .header, .main ,.footer{
-    border: 1px solid black;
+    //border: 1px solid black;
 }
 
 .header{
@@ -37,6 +37,7 @@
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
     margin: 100px auto;
+    margin-top: 300px;
   }
   
   @keyframes spin {

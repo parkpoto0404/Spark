@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const Signup = () => {
 
 
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState(''); // 핸드폰 입력값
   const [smsNumber, setSmsNumber] = useState(''); // 인증번호 입력값
   const [smsResult, setSmsResult] = useState(''); // 발송된 인증번호
   const [smsStatus, setSmsStatus] = useState(false); // 인증번호 전송 상태
@@ -16,11 +16,10 @@ const Signup = () => {
   const [message, setMessage] = useState(''); // 비밀번호 확인 메세지
   const [messageColor, setMessageColor] = useState('red'); // 메세지 컬러
 
-  //const [checkAll, setCheckAll] = useState(false); // 올체크
   const [terms1, setTerms1] = useState(false); // 필수 1
   const [terms2, setTerms2] = useState(false); // 필수 2
   const [terms3, setTerms3] = useState(false); // 선택
-  const isAllChecked = terms1 && terms2 && terms3;
+  const isAllChecked = terms1 && terms2 && terms3; // 올체크
   const navi = useNavigate();
 
 
@@ -48,19 +47,20 @@ const Signup = () => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: phone 
+        body: phone
       });
 
       if (!res.ok) throw new Error("인증 요청 실패");
       
       const data = await res.text();
       setSmsResult(data); // 서버에서 받은 인증번호라고 가정
-      setShowSmsInput(true);
+      setSmsStatus(true);
       alert('인증번호가 전송되었습니다.')
     } catch (err) {
       console.log('인증실패', err);
     }
-  */
+      */
+  
 
   }
 
@@ -80,13 +80,11 @@ const Signup = () => {
       setAuthentication(true);
     }
 
-
-
   }
 
 
 
-  const handleSingUp = (e) => {
+  const handleSingUp = async (e) => {
     e.preventDefault();
 
     if (phone === '' || smsNumber === '' || !smsStatus || !authentication) {
@@ -102,8 +100,32 @@ const Signup = () => {
       alert('필수항목을 체크해주세요');
       return;
     } else {
-      alert('사랑해')
-      navi('/login')
+
+      try {
+
+        const res = await fetch ('http://localhost:8888/spark/api/signup',{
+          method : 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            memId : phone,
+            memPwd : pwd
+          }),
+        })
+
+        if (!res.ok) throw new Error("회원가입 실패");
+
+        const data = await res.json();
+        console.log("회원가입 응답데이터 : ",data)
+  
+        alert('회원가입 성공하였습니다. 당신의 spark를 찾아보세요!')
+        navi('/login')
+      }catch(err){
+        alert("회원가입 실패", err)
+      }
+
+
     }
 
   }
@@ -119,7 +141,7 @@ const Signup = () => {
       setMessage('비밀번호가 일치하지 않아요!');
       setMessageColor('red');
     }
-  }, [pwd, verifyPwd]); // 둘 중 하나가 바뀔 때마다 실행됨
+  }, [pwd, verifyPwd]); 
 
 
   const handleAllCheck = (e) => { // 모두동의 클릭시
@@ -185,7 +207,7 @@ const Signup = () => {
             onChange={(e) => setVerifyPwd(e.target.value)}
           />
         </div>
-        {message && <p style={{ color: messageColor }}>{message}</p>}
+        {message && <p style={{ color: messageColor, marginLeft: '20px',marginTop: '15px' }}>{message}</p>}
 
         <div className="container-2">
           <div className="terms-box">

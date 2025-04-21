@@ -23,12 +23,7 @@ function HeaderLayout() {
   return location.pathname !== "/login" ? <Header /> : null;
 }
 
-/*
-function FooterLayout() {
-  const location = useLocation();
-  return location.pathname !== "/signup" ? <Footer /> : null;
-}
-*/
+
 
 function AppRoutes() {
   const { loginCheck, loading } = useAuthContext();
