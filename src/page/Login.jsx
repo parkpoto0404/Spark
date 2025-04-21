@@ -5,7 +5,7 @@ import { useAuthContext } from "../context/AuthContext";
 const Login = () => {
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
-  const { setLoginCheck } = useAuthContext();
+  const { setLoginCheck,setMemberInfo } = useAuthContext();
   const navi = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -34,12 +34,16 @@ const Login = () => {
       localStorage.setItem("jwt", accessToken);
         setLoginCheck(true);
         alert("로그인 성공!");
+        setMemberInfo(data.memberDto);
+        navi("/");
 
+        /*
       if(loginStatus === 'A' ){
         navi("/insertInfo");
       }else{
         navi("/");
       }
+        */
 
       
       

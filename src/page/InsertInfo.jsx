@@ -3,9 +3,9 @@ import React from 'react'
 const InsertInfo = () => {
   return (
 
-    <div>
+    <div style={{minHeight:'200vh'}}>
         <h2>정보 입력</h2>
-        <form action="">
+        <form action=""> 1
         <input type="text" placeholder='이름' /> 1
         <input type="text" placeholder='닉네임' /> 1
         <input type="text" placeholder='직업' /> 1

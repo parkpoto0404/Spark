@@ -7,6 +7,7 @@ let refreshPromise = null; // 🔒 리프레시 중이면 공유할 Promise
 export const AuthProvider = ({ children }) => {
   const [loginCheck, setLoginCheck] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [memberInfo, setMemberInfo] = useState(null); // 로그인 정보
 
   useEffect(() => {
     initAuth();
@@ -74,7 +75,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ loginCheck, loading, setLoginCheck }}>
+    <AuthContext.Provider value={{ loginCheck, loading, setLoginCheck,memberInfo,setMemberInfo }}>
       {children}
     </AuthContext.Provider>
   );
