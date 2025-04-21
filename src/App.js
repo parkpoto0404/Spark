@@ -10,6 +10,7 @@ import Signup from './page/Signup';
 import Like from './page/Like';
 import Mypage from './page/Mypage';
 import Chat from './page/Chat';
+import InsertInfo from './page/InsertInfo';
 import Not from './page/Not';
 import Header from './component/section/Header';
 import Main from './component/section/Main';
@@ -71,7 +72,19 @@ function AppRoutes() {
           </PrivateRoute>
         }
       />
+      <Route path='*' element={<Not />} 
+      />
+      <Route
+        path='/insertInfo'
+        element={
+          <PrivateRoute loginCheck={loginCheck} loading={loading}>
+            <InsertInfo />
+          </PrivateRoute>
+        }
+      />
       <Route path='*' element={<Not />} />
+
+
     </Routes>
   );
 }

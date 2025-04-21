@@ -159,7 +159,7 @@ const Signup = () => {
 
 
   return (
-    <div style={{minHeight : '135vh'}}>
+    <div style={{minHeight : '135vh', paddingBottom: '120px'}}>
       <form onSubmit={handleSingUp}>
 
         <h3 className='ath-title'><b>휴대폰 번호</b></h3>

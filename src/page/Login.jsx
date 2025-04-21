@@ -25,12 +25,25 @@ const Login = () => {
 
       const data = await res.json();
       const { accessToken } = data.token;
+      const loginStatus =  data.memberDto.status;
+
+      console.log(loginStatus)
+      console.log(data)
+
 
       localStorage.setItem("jwt", accessToken);
-      setLoginCheck(true);
+        setLoginCheck(true);
+        alert("로그인 성공!");
+
+      if(loginStatus === 'A' ){
+        navi("/insertInfo");
+      }else{
+        navi("/");
+      }
+
       
-      alert("로그인 성공!");
-      navi("/");
+      
+      
     } catch (err) {
       alert("아이디 혹은 비밀번호가 잘못되었습니다!");
     } finally {
