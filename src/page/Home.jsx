@@ -12,6 +12,7 @@ const Home = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          "Authorization": "Bearer " + localStorage.getItem("jwt")  
         },
         body: JSON.stringify(memberInfo), // memberInfo를 요청 본문에 포함
       });
