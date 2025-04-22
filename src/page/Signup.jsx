@@ -101,6 +101,8 @@ const Signup = () => {
       return;
     } else {
 
+
+
       try {
 
         const res = await fetch ('http://localhost:8888/spark/api/signup',{
@@ -121,11 +123,10 @@ const Signup = () => {
   
         alert('회원가입 성공하였습니다. 당신의 spark를 찾아보세요!')
         navi('/login')
+        
       }catch(err){
         alert("회원가입 실패", err)
       }
-
-
     }
 
   }

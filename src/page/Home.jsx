@@ -2,48 +2,62 @@ import React, { useEffect, useState } from 'react';
 import { useAuthContext } from "../context/AuthContext";
 
 const Home = () => {
-  const { memberInfo } = useAuthContext();
+
+  const { memberInfo,loading  } = useAuthContext();
   const [recommendations, setRecommendations] = useState([]);
 
   // 추천 리스트를 가져오는 함수
   const fetchRecommendations = async () => {
+
+    console.log('추천 fetch 실행됨');
+
+    const token = localStorage.getItem("jwt");
+
     try {
-      const response = await fetch('http://localhost:8888/spark/api/recommend', {
+
+      const res = await fetch('http://localhost:8888/spark/api/recommend', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": "Bearer " + localStorage.getItem("jwt")  
+          "Authorization": `Bearer ${token}` // 토큰 보내기
         },
-        body: JSON.stringify(memberInfo), // memberInfo를 요청 본문에 포함
+        body: JSON.stringify(memberInfo), // 로그인정보 요청데이터 보내기
       });
 
-      if (!response.ok) {
+      if (!res.ok) {
         throw new Error('추천 리스트를 가져오는 데 실패했습니다.');
       }
 
-      const data = await response.json();
-      setRecommendations(data); // 추천 리스트를 상태에 저장
-      console.log('추천 리스트:', data); // 콘솔에 추천 리스트 출력
+      const data = await res.json();
+
+      setRecommendations(data); // 추천 리스트 저장
+      console.log('추천 리스트:', data); 
+
     } catch (error) {
       console.error(error);
     }
   };
 
-  useEffect(() => {
-    if (memberInfo) {
-      fetchRecommendations(); // memberInfo가 있을 때 추천 리스트를 가져옴
-    }
-  }, [memberInfo]);
 
-  
+  useEffect(() => {
+    if (!loading && memberInfo) {
+      fetchRecommendations();
+    }
+
+  }, [loading, memberInfo]);
+
+
 
   return (
     <div className="container">
-      <div className="profile-card">
+
+    {recommendations.map((user,key) =>(
+
+      <div className="profile-card" key={key}>
         <img className="profile-image" src="/spark_logo.png" alt="프로필 이미지" />
         <div className="overlay">
-          <h3>홍길동, 25</h3>
-          <p>어플 처음이라 어색하지만<br />좋은 인연 기다려볼게요♡</p>
+          <h3>{user.nickName}, {user.birthDate}</h3>
+          <p>{user.memInfo}</p>
         </div>
         <div className="buttons">
           <button className="btn-dislike">✖</button>
@@ -51,6 +65,14 @@ const Home = () => {
           <button className="btn-chat">📩</button>
         </div>
       </div>
+    
+    ))}
+
+
+    
+      
+      
+
     </div>
   );
 };

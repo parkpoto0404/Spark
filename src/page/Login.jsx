@@ -5,7 +5,7 @@ import { useAuthContext } from "../context/AuthContext";
 const Login = () => {
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
-  const { setLoginCheck,setMemberInfo } = useAuthContext();
+  const { setLoginCheck, setMemberInfo } = useAuthContext();
   const navi = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -25,29 +25,24 @@ const Login = () => {
 
       const data = await res.json();
       const { accessToken } = data.token;
-      const loginStatus =  data.memberDto.status;
+      const loginStatus = data.memberDto.status;
 
       console.log(loginStatus)
       console.log(data)
 
 
       localStorage.setItem("jwt", accessToken);
-        setLoginCheck(true);
-        alert("로그인 성공!");
-        setMemberInfo(data.memberDto);
-        navi("/");
+      setLoginCheck(true);
+      alert("로그인 성공!");
+      setMemberInfo(data.memberDto);
 
-        /*
-      if(loginStatus === 'A' ){
+      if (loginStatus === 'A') {
         navi("/insertInfo");
-      }else{
+      } else {
         navi("/");
       }
-        */
 
-      
-      
-      
+
     } catch (err) {
       alert("아이디 혹은 비밀번호가 잘못되었습니다!");
     } finally {
