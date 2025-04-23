@@ -36,7 +36,7 @@ const Login = () => {
       alert("로그인 성공!");
       setMemberInfo(data.memberDto);
 
-      if (loginStatus === 'A') {
+      if (loginStatus === 'A') { // 회원가입 후 처음 로그인시 정보입력페이지로!
         navi("/insertInfo");
       } else {
         navi("/");
