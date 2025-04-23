@@ -56,7 +56,7 @@ const Home = () => {
       <div className="profile-card" key={key}>
         <img className="profile-image" src="/spark_logo.png" alt="프로필 이미지" />
         <div className="overlay">
-          <h3>{user.nickName}, {user.birthDate}</h3>
+          <h3>{user.nickName}, {user.age}</h3>
           <p>{user.memInfo}</p>
         </div>
         <div className="buttons">
