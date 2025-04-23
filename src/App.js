@@ -29,6 +29,7 @@ function HeaderLayout() {
 function AppRoutes() {
   const { loginCheck, loading, memberInfo } = useAuthContext();
 
+
   // loginCheck 판단이 끝나기 전에는 라우터 자체 렌더링 안함
   if (loading || loginCheck === null) {
     return <div className="loading-spinner"></div>;
@@ -97,13 +98,13 @@ function AppRoutes() {
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <HeaderLayout />
-        <Main>
-          <AppRoutes />
-        </Main>
-        <Footer />
-      </BrowserRouter>
+        <BrowserRouter>
+          <HeaderLayout />
+          <Main>
+            <AppRoutes />
+          </Main>
+          <Footer />
+        </BrowserRouter>
     </AuthProvider>
   );
 }
