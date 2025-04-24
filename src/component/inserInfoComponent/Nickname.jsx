@@ -14,12 +14,11 @@ const NickName = ({ nickName, handleNickName }) => {
         headers:{Authorization: `Bearer ${accessToken}`},
         credentials: 'include'
       });
-
+      console.log(res.ok);
       if (res.ok) {
         const data = await res.json();
-       
-        if (data.isDuplicate) {
-            
+        console.log(typeof data);
+        if (data) {
           setIsDuplicate(true);
           setMessage('이 닉네임은 이미 사용 중입니다.');
         } else {
