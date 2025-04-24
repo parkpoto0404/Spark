@@ -16,15 +16,15 @@ const NickName = ({ nickName, handleNickName }) => {
       });
       console.log(res.ok);
       if (res.ok) {
-        const data = await res.json();
-        console.log(typeof data);
-        if (data) {
-          setIsDuplicate(true);
-          setMessage('이 닉네임은 이미 사용 중입니다.');
-        } else {
-          setIsDuplicate(false);
-          setMessage('사용 가능한 닉네임입니다!');
-        }
+        const nickNameChecking = await res.json();
+        console.log(nickNameChecking)
+        if (nickNameChecking === false) {
+            setIsDuplicate(true);
+            setMessage('이 닉네임은 이미 사용 중입니다.');
+          } else {
+            setIsDuplicate(false);
+            setMessage('사용 가능한 닉네임입니다!');
+          }
       } else {
         setIsDuplicate(true);
         setMessage('중복 확인 실패. 다시 시도해주세요.');
