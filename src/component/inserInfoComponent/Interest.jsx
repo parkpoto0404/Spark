@@ -1,4 +1,5 @@
 import React from 'react'
+import SelectableList from '../SelectableList/SelectableList'
 
 
 
@@ -31,27 +32,11 @@ const Interest = ({ handleInterest, interest }) => {
 
 
     return (
-        <div style={{ marginTop: '40px' }} className='slide-in'>
-            <h2 className='userInfo-title'>취미를 골라주세요.</h2>
-            <div className='interest-select'>
-
-                {interestList.map((item) => {
-                    return (
-
-                        <button
-                            key={item}
-                            type='button'
-                            className={`interestList-item ${interest.includes(item) ? 'selected' : ''}`}
-                            onClick={() => handleInterest(item)}
-                        >
-                            {item}
-
-                        </button>
-                    )
-                })}
-
-            </div>
-        </div>
+        <SelectableList 
+        title="취미를 골라주세요."
+        list={interestList}
+        selected={interest}
+        onToggle={handleInterest}/>
     )
 }
 

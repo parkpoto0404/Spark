@@ -1,4 +1,5 @@
 import React from 'react'
+import SelectableList from '../SelectableList/SelectableList';
 
 
 
@@ -31,27 +32,11 @@ const Character = ({ handleCharacter, character }) => {
 
 
     return (
-        <div style={{ marginTop: '40px' }} className='slide-in'>
-            <h2 className='userInfo-title'>나의 특징을 어필해보세요.</h2>
-            <div className='character-select' >
-
-                {characterList.map((item) => {
-                    return (
-
-                        <button
-                            key={item}
-                            type='button'
-                            className={`character-item ${character.includes(item) ? 'selected' : ''}`}
-                            onClick={() => handleCharacter(item)}
-                        >
-                            {item}
-
-                        </button>
-                    )
-                })}
-
-            </div>
-        </div>
+        <SelectableList 
+        title="나의 매력을 어필해보세요."
+        list={characterList}
+        selected={character}
+        onToggle={handleCharacter}/>
     )
 }
 

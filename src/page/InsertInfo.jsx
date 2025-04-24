@@ -13,6 +13,7 @@ import Smock from '../component/inserInfoComponent/Smock';
 import Interest from '../component/inserInfoComponent/Interest';
 import Tendencies from '../component/inserInfoComponent/Tendencies';
 import Character from '../component/inserInfoComponent/Character';
+import MyProfile from '../component/inserInfoComponent/MyProfile';
 
 
 
@@ -21,6 +22,7 @@ import Character from '../component/inserInfoComponent/Character';
 const InsertInfo = () => {
 
     const { step, setStep } = useAuthContext();
+    const [preview, setPreview] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         nickName: '',
@@ -37,12 +39,15 @@ const InsertInfo = () => {
         interest: [],
         tendencies: [],
         character: [],
-        profile: ''
+        profile: []
     });
 
 
     const handleNext = () => { // 다음버튼
-        setStep(prev => prev + 1);
+        if(step < 10){
+
+            setStep(prev => prev + 1);
+        }
     };
 
     const handleNickName = (e) => { // 닉네임 핸들러
@@ -183,6 +188,17 @@ const InsertInfo = () => {
       }
 
 
+      const handleProfile = (file) => {
+        if (file) {
+          const previewURL = URL.createObjectURL(file); // 파일 미리보기 URL 생성
+          setPreview(previewURL); // 미리보기 상태 업데이트
+      
+          setFormData((prev) => ({
+            ...prev,
+            profile: [file], // 단일 파일로 배열로 저장
+          }));
+        }
+      };
 
     return (
         <div style={{ minHeight: '90vh' }}>
@@ -222,7 +238,7 @@ const InsertInfo = () => {
                         {step === 6 && (
                             <>
                                 <MBTI handleMBTI={handleMBTI} mbti={formData.mbti} />
-                                <Smock handleSmoke={handleSmock} smock={formData.smock} />
+                                <Smock handleSmock={handleSmock} smock={formData.smock} />
                             </>
                         )}
                         {step === 7 && (
@@ -239,6 +255,11 @@ const InsertInfo = () => {
                         {step === 9 && (
                             <>
                                 <Character handleCharacter={handleCharacter} character={formData.character} />
+                            </>
+                        )}
+                        {step === 10 && (
+                            <>
+                                <MyProfile handleProfile={handleProfile} preview={preview} />
                             </>
                         )}
                     </div>

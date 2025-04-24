@@ -1,4 +1,5 @@
 import React from 'react'
+import SelectableList from '../SelectableList/SelectableList';
 
 
 
@@ -28,27 +29,11 @@ const Tendencies = ({ handleTendencies, tendencies }) => {
 
 
     return (
-        <div style={{ marginTop: '40px' }} className='slide-in'>
-            <h2 className='userInfo-title'>연예성향을 골라주세요.</h2>
-            <div className='infoList-select' >
-
-                {tendenciesList.map((item) => {
-                    return (
-
-                        <button
-                            key={item}
-                            type='button'
-                            className={`infoList-item ${tendencies.includes(item) ? 'selected' : ''}`}
-                            onClick={() => handleTendencies(item)}
-                        >
-                            {item}
-
-                        </button>
-                    )
-                })}
-
-            </div>
-        </div>
+        <SelectableList 
+        title="연예성향을 골라주세요."
+        list={tendenciesList}
+        selected={tendencies}
+        onToggle={handleTendencies}/>
     )
 }
 
