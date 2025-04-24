@@ -3,7 +3,7 @@
     margin-left: 20px;
 }
 
-.nickName-container{
+.inputs-container{
     margin-top: 30px;
     display: flex;
     border: 1px solid #d7d7d7;
@@ -13,7 +13,7 @@
     margin-left: 15px;
     margin-right: 15px;
 
-    .nickName{
+    .inputs{
         border: none;
         height: 50px;
         //background-color: red;
@@ -46,13 +46,13 @@
         background-color: #c1c1fb;
     }
     .gender-f:hover{
-        background-color: #f7899b !important;
+        background-color: #f46b82 !important;
     }
     .gender-m:hover{
         background-color: #8080f8 !important;
     }
     .gender-f.selected {
-        background-color: #f7899b !important;
+        background-color: #f46b82 !important;
     }
     .gender-m.selected {
         background-color: #8080f8 !important;
@@ -85,7 +85,7 @@
 
 
 
-  .lastEducation {
+  .dropdown-container {
     background-color: #f7f7f7;
     width: 90%;
     margin: 0 auto;
@@ -95,81 +95,108 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
   
-  .lastEducation-select {
+  .dropdown-select {
     background-color: white;
     border-radius: 8px;
     border: 1px solid #ccc;
     padding: 10px;
     cursor: pointer;
   }
-  .lastEducation-select span {
+  .dropdown-select span {
     margin-left: 10px;
   }
 
-  .lastEducation-options{
+  .dropdown-options{
     display: block;
     max-height: 150px; /* 높이는 원하는 대로 조정 */
     overflow-y: auto;
   }
 
-  .lastEducation-options li{
+  .dropdown-options li{
     margin-top: 15px;
     padding-top: 15px;
     padding-left: 10px;
     padding-bottom: 15px;
   }
 
-  .lastEducation-options li:hover{
+  .dropdown-options li:hover{
     background-color: rgb(191, 189, 189);
     border-radius: 8px;
   }
 
 
-
-
-  
-
-  .address {
-    background-color: #f7f7f7;
-    width: 90%;
-    margin: 0 auto;
-    margin-top: 20px;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  .interest-select {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* 버튼 사이 여백 */
+    margin: 20px;
+    justify-content: center;
+    margin-top: 65px;
   }
   
-  .address-select {
-    background-color: white;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    padding: 10px;
+  .interestList-item {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    background-color: #f0f0f0;
+    color: #333;
     cursor: pointer;
-  }
-  .address-select span {
-    margin-left: 10px;
-  }
-
-  .address-options{
-    display: block;
-    max-height: 150px; /* 높이는 원하는 대로 조정 */
-    overflow-y: auto;
-  }
-
-  .address-options li{
-    margin-top: 15px;
-    padding-top: 15px;
-    padding-left: 10px;
-    padding-bottom: 15px;
-  }
-
-  .address-options li:hover{
-    background-color: rgb(191, 189, 189);
-    border-radius: 8px;
+    transition: all 0.2s ease;
+    width: 30%;
   }
   
+  .interestList-item:hover {
+    background-color: #d8d8d8;
+  }
   
+  .interestList-item.selected {
+    background-color: #ff85d0;
+    color: white;
+    font-weight: bold;
+  }
+
+
+
   
+
+  .infoList-select {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* 버튼 사이 여백 */
+    margin: 20px;
+    justify-content: center;
+    margin-top: 65px;
+  }
+  
+  .infoList-item {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    background-color: #f0f0f0;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 30%;
+  }
+  
+  .infoList-item:hover {
+    background-color: #d8d8d8;
+  }
+  
+  .infoList-item.selected {
+    background-color: #ff85d0;
+    color: white;
+    font-weight: bold;
+  }
+
+
+
+
+
+  
+
 
 
   

@@ -83,14 +83,7 @@ function AppRoutes() {
         }
       />
 
-
-
-
-
-
       <Route path='*' element={<Not />} />
-
-
     </Routes>
   );
 }
@@ -98,13 +91,13 @@ function AppRoutes() {
 function App() {
   return (
     <AuthProvider>
-        <BrowserRouter>
-          <HeaderLayout />
-          <Main>
-            <AppRoutes />
-          </Main>
-          <Footer />
-        </BrowserRouter>
+      <BrowserRouter>
+        <HeaderLayout />
+        <Main>
+          <AppRoutes />
+        </Main>
+        <Footer />
+      </BrowserRouter>
     </AuthProvider>
   );
 }
