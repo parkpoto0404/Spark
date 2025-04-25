@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import NickName from '../component/inserInfoComponent/Nickname';
 import Education from '../component/inserInfoComponent/Education';
@@ -21,10 +22,11 @@ import MyProfile from '../component/inserInfoComponent/MyProfile';
 // 메인 InsertInfo 컴포넌트
 const InsertInfo = () => {
 
+    const navi = useNavigate();
     const { step, setStep } = useAuthContext();
     const [preview, setPreview] = useState(null);
     const [formData, setFormData] = useState({
-        name: '',
+        
         nickName: '',
         job: '',
         info: '',
@@ -200,9 +202,64 @@ const InsertInfo = () => {
         }
       };
 
+
+
+      const hadleInfoSubmit = async (e) => {
+        e.preventDefault();
+        const accessToken = localStorage.getItem('jwt');
+        const data = new FormData();
+
+        
+        data.append('nickName',formData.nickName);
+        data.append('location',formData.address);
+        data.append('gender',formData.gender);
+        data.append('birthDate',formData.birthday);
+        data.append('occupation',formData.job);
+        data.append('education',formData.education);
+        data.append('mbti',formData.mbti);
+        data.append('tall',formData.tall);
+        data.append('religion',formData.religion); // 종교
+        data.append('smock',formData.smock); // 흡연여부
+        data.append('interest2',formData.interest); // 관심사
+        data.append('tendencies2',formData.tendencies); // 연예성향
+        data.append('character2',formData.character); // 취미
+        data.append('uploadFile',formData.profile[0]); // 사진
+        
+
+        try {
+            const InfoListResponse = await fetch ('http://localhost:8888/spark/api/insertInfo' ,{
+                method : 'PATCH',
+                headers : { 
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                credentials: "include",
+                body : data
+            });
+
+            const resdata = await InfoListResponse.json();
+            console.log(resdata)
+            if(InfoListResponse.ok){
+                if(resdata  === 1){
+                    
+                    console.log('업로드 완료')
+                    navi('/');
+                }else{
+                    console.log('업로드 실패')
+                }
+
+            }else{
+                console.log('업로드 실패')
+            }
+        } catch {
+            console.log('업로드 에러')
+        }
+
+
+      }
+
     return (
         <div style={{ minHeight: '90vh' }}>
-            <form>
+            <form onSubmit={hadleInfoSubmit} enctype="multipart/form-data" >
                 <div className='info-container'>
                     <div className='info-section'>
                         {step === 1 && (
@@ -264,13 +321,20 @@ const InsertInfo = () => {
                         )}
                     </div>
 
-                    <button
+                    {step !== 10 && (<button
                         type='button'
                         className='next-btn'
                         onClick={handleNext}
                     >
                         다음
-                    </button>
+                    </button>)}
+
+                    {step === 10 && (<button
+                        type='submit'
+                        className='submit-btn'
+                    >
+                        완료
+                    </button>)}
                 </div>
             </form>
         </div>

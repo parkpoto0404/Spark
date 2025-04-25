@@ -62,7 +62,7 @@ const Home = () => {
         <div className="buttons">
           <button className="btn-dislike">✖</button>
           <button className="btn-like">❤</button>
-          <button className="btn-chat">📩</button>
+          <button className="btn-chat">☆</button>
         </div>
       </div>
     
