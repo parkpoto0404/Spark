@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
 
   const { memberInfo,loading  } = useAuthContext();
   const [recommendations, setRecommendations] = useState([]);
+  const navi = useNavigate();
 
   // 추천 리스트를 가져오는 함수
-  const fetchRecommendations = async () => {
+  const sparkUserList = async () => {
 
     console.log('추천 fetch 실행됨');
 
@@ -40,11 +42,17 @@ const Home = () => {
 
 
   useEffect(() => {
-    if (!loading && memberInfo) {
-      fetchRecommendations();
-    }
+    if (!loading) { // 로딩이 끝나면
+      console.log('memberInfo:', memberInfo); // 이거 추가!
+      if(!memberInfo || !memberInfo.nickName){ // 신유저가 입력도중 서버를 끄고 켜졌을때 메인으로 이동되었음.
+                                               // 그런 상황일때 다시 insertInfo 페이지로 잘 연동될 수 있게 조건을 걸어줌. 
+        navi('/insertInfo')
+        return;
+      }
 
-  }, [loading, memberInfo]);
+      sparkUserList();
+    }
+  }, [loading, memberInfo,navi]);
 
 
 

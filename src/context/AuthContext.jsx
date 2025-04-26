@@ -76,6 +76,7 @@ export const AuthProvider = ({ children }) => {
   };
 
     useEffect(() => {
+      
       initAuth();
     }, []);
 

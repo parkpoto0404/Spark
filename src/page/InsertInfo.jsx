@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from "react-router-dom";
+import React, { useState} from 'react';
+import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import NickName from '../component/inserInfoComponent/Nickname';
 import Education from '../component/inserInfoComponent/Education';
@@ -15,6 +15,7 @@ import Interest from '../component/inserInfoComponent/Interest';
 import Tendencies from '../component/inserInfoComponent/Tendencies';
 import Character from '../component/inserInfoComponent/Character';
 import MyProfile from '../component/inserInfoComponent/MyProfile';
+import MyInfo from '../component/inserInfoComponent/MyInfo';
 
 
 
@@ -46,8 +47,7 @@ const InsertInfo = () => {
 
 
     const handleNext = () => { // 다음버튼
-        if(step < 10){
-
+        if(step < 11){
             setStep(prev => prev + 1);
         }
     };
@@ -176,7 +176,7 @@ const InsertInfo = () => {
       const handleCharacter = (item) => {
         setFormData(prev => {
             
-            const alreadySelected = prev.character .includes(item);
+            const alreadySelected = prev.character.includes(item);
             if (!alreadySelected && prev.character.length >= 3) {
               return prev; // 아무것도 바꾸지 않고 그대로 반환
             }
@@ -187,6 +187,10 @@ const InsertInfo = () => {
             };
           });
 
+      }
+
+      const handleMyInfo = (e) => {
+        setFormData({...formData, info : e.target.value})
       }
 
 
@@ -201,6 +205,8 @@ const InsertInfo = () => {
           }));
         }
       };
+
+      
 
 
 
@@ -223,6 +229,7 @@ const InsertInfo = () => {
         data.append('interest2',formData.interest); // 관심사
         data.append('tendencies2',formData.tendencies); // 연예성향
         data.append('character2',formData.character); // 취미
+        data.append('memInfo',formData.info)
         data.append('uploadFile',formData.profile[0]); // 사진
         
 
@@ -259,7 +266,7 @@ const InsertInfo = () => {
 
     return (
         <div style={{ minHeight: '90vh' }}>
-            <form onSubmit={hadleInfoSubmit} enctype="multipart/form-data" >
+            <form onSubmit={hadleInfoSubmit} encType="multipart/form-data" >
                 <div className='info-container'>
                     <div className='info-section'>
                         {step === 1 && (
@@ -316,12 +323,17 @@ const InsertInfo = () => {
                         )}
                         {step === 10 && (
                             <>
+                                <MyInfo handleMyInfo={handleMyInfo} info={formData.info} />
+                            </>
+                        )}
+                        {step === 11 && (
+                            <>
                                 <MyProfile handleProfile={handleProfile} preview={preview} />
                             </>
                         )}
                     </div>
 
-                    {step !== 10 && (<button
+                    {step !== 11 && (<button
                         type='button'
                         className='next-btn'
                         onClick={handleNext}
@@ -329,7 +341,7 @@ const InsertInfo = () => {
                         다음
                     </button>)}
 
-                    {step === 10 && (<button
+                    {step === 11 && (<button
                         type='submit'
                         className='submit-btn'
                     >

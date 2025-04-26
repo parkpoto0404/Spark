@@ -197,6 +197,27 @@
     font-weight: bold;
   }
 
+  .myinfo-container{
+    margin-top: 30px;
+    display: flex;
+    border: 1px solid #d7d7d7;
+    border-radius: 15px;
+    height: 240px;
+    margin-left: 15px;
+    margin-right: 15px;
+    padding: 5px;
+  }
+
+  .myinfo-textarea{
+    border: none;
+    resize: none;
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+
+
 
 
 
