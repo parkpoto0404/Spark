@@ -50,7 +50,7 @@ const NickName = ({ nickName, handleNickName }) => {
         </button>
       </div>
       {message && (
-        <p style={{ color: isDuplicate ? 'red' : 'green', marginTop: '10px' }}>
+        <p style={{ color: isDuplicate ? 'red' : 'green', marginTop: '10px' , marginLeft : '30px'}}>
           {message}
         </p>
       )}

@@ -27,7 +27,7 @@ function HeaderLayout() {
 
 
 function AppRoutes() {
-  const { loginCheck, loading, memberInfo } = useAuthContext();
+  const { loginCheck, loading } = useAuthContext();
 
 
   // loginCheck 판단이 끝나기 전에는 라우터 자체 렌더링 안함

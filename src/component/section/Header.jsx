@@ -7,7 +7,7 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { step , setStep } = useAuthContext();
-  const { firstPage,setFirstPage } = useAuthContext(); // step 별 에니메이션 방지용
+  //const { firstPage,setFirstPage } = useAuthContext(); // step 별 에니메이션 방지용
 
 
   const isSignupPage = location.pathname === '/signup';
@@ -16,7 +16,7 @@ const Header = () => {
 
   const handleBack = () => {
     setStep(prev => prev > 1 ? prev - 1 : prev); // 1보다 클 때만 감소
-    setFirstPage(true);
+    //setFirstPage(true);
   }
 
   return (
