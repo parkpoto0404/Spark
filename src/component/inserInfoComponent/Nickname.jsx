@@ -14,7 +14,7 @@ const NickName = ({ nickName, handleNickName }) => {
         headers:{Authorization: `Bearer ${accessToken}`},
         credentials: 'include'
       });
-
+      console.log(res.ok);
       if (res.ok) {
         const nickNameChecking = await res.json();
         console.log(nickNameChecking)

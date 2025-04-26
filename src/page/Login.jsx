@@ -5,7 +5,7 @@ import { useAuthContext } from "../context/AuthContext";
 const Login = () => {
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
-  const { setLoginCheck, setMemberInfo } = useAuthContext();
+  const { setLoginCheck, setMemberInfo,setStep } = useAuthContext();
   const navi = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -37,6 +37,7 @@ const Login = () => {
       setMemberInfo(data.memberDto);
 
       if (loginStatus === 'A') { // 회원가입 후 처음 로그인시 정보입력페이지로!
+        setStep(1);
         navi("/insertInfo");
       } else {
         navi("/");

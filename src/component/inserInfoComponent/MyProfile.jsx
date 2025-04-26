@@ -17,6 +17,7 @@ const MyProfile = ({ handleProfile,preview }) => {
   return (
     <div style={{ textAlign: 'center' }}>
 
+    <div className='slide-in'>
      <h2>나의 프로필 사진을 등록해주세요.</h2>
       <label style={{ display: 'block', marginBottom: '10px' }}></label>
       <input type="file" accept="image/*" onChange={handleImageChange}  style={{marginTop: '25px',width:'90%'}}/>
@@ -35,6 +36,7 @@ const MyProfile = ({ handleProfile,preview }) => {
           />
         </div>
       )}
+      </div>
     </div>
   );
 };

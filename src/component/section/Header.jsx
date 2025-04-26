@@ -39,7 +39,7 @@ const Header = () => {
               <h2>〈 </h2> 
             </span>
           </div>
-          <span style={{alignContent: 'center'}}><h4> 작성완료까지 {step}/10</h4></span>
+          <span style={{alignContent: 'center'}}><h4> 작성완료까지 {step}/11</h4></span>
           <span style={{alignContent: 'center'}}></span>
         </div>
       )}
