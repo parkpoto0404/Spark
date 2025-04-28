@@ -246,8 +246,7 @@ const InsertInfo = () => {
             const resdata = await InfoListResponse.json();
             console.log(resdata)
             if(InfoListResponse.ok){
-                if(resdata  === 1){
-                    
+                if(resdata  != null){
                     console.log('업로드 완료')
                     navi('/');
                 }else{
