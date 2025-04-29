@@ -43,13 +43,13 @@ const Home = () => {
 
   useEffect(() => {
     if (!loading) { // 로딩이 끝나면
-      console.log('memberInfo:', memberInfo); // 이거 추가!
+      console.log('memberInfo:', memberInfo); 
       if(!memberInfo || !memberInfo.nickName){ // 신유저가 입력도중 서버를 끄고 켜졌을때 메인으로 이동되었음.
                                                // 그런 상황일때 다시 insertInfo 페이지로 잘 연동될 수 있게 조건을 걸어줌. 
         navi('/insertInfo')
         return;
       }
-
+      
       sparkUserList();
     }
   }, [loading, memberInfo,navi]);

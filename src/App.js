@@ -8,6 +8,7 @@ import Login from './page/Login';
 import Pwdfind from './page/Pwdfind';
 import Signup from './page/Signup';
 import Like from './page/Like';
+import Feed from './page/Feed';
 import Mypage from './page/Mypage';
 import Chat from './page/Chat';
 import InsertInfo from './page/InsertInfo';
@@ -54,6 +55,14 @@ function AppRoutes() {
         element={
           <PrivateRoute loginCheck={loginCheck} loading={loading}>
             <Like />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path='/feed'
+        element={
+          <PrivateRoute loginCheck={loginCheck} loading={loading}>
+            <Feed />
           </PrivateRoute>
         }
       />

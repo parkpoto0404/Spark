@@ -83,6 +83,7 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={{ loginCheck, 
                                    loading,
+                                   initAuth,
                                    setLoginCheck,
                                    memberInfo,
                                    setMemberInfo,

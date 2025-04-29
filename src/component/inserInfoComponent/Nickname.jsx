@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // NickNamePage 컴포넌트
-const NickName = ({ nickName, handleNickName }) => {
+const NickName = ({ nickName, handleNickName ,setNickNameCheck}) => {
   const [isDuplicate, setIsDuplicate] = useState(false);  // 중복 여부 상태
   const [message, setMessage] = useState('');  // 메시지 상태
 
@@ -21,17 +21,21 @@ const NickName = ({ nickName, handleNickName }) => {
         if (nickNameChecking === false) {
             setIsDuplicate(true);
             setMessage('이 닉네임은 이미 사용 중입니다.');
+            setNickNameCheck(false);
           } else {
             setIsDuplicate(false);
             setMessage('사용 가능한 닉네임입니다!');
+            setNickNameCheck(true);
           }
       } else {
         setIsDuplicate(true);
         setMessage('중복 확인 실패. 다시 시도해주세요.');
+        setNickNameCheck(false);
       }
     } catch (error) {
       setIsDuplicate(true);
       setMessage('네트워크 오류가 발생했습니다.');
+      setNickNameCheck(false);
     }
   };
 
