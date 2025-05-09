@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { IoLocationSharp } from "react-icons/io5";
+import { PiBagSimpleFill } from "react-icons/pi";
 
 const Home = () => {
 
@@ -62,10 +64,17 @@ const Home = () => {
     {recommendations.map((user,key) =>(
 
       <div className="profile-card" key={key}>
-        <img className="profile-image" src="/spark_logo.png" alt="프로필 이미지" />
+        <img className="profile-image" src={`http://localhost:8888/${user.profile}`} alt="프로필 이미지" />
         <div className="overlay">
-          <h3>{user.nickName}, {user.age}</h3>
-          <p>{user.memInfo}</p>
+          <h3>{user.nickName}&nbsp;&nbsp;{user.age}</h3>
+          <span style={{marginTop: "10px", display: "flex"}}>
+            <PiBagSimpleFill style={{alignSelf: "center"}}/>
+            <p style={{marginLeft: '10px'}}>{user.occupation}</p>
+          </span>
+          <span style={{display: "flex"}}>
+            <IoLocationSharp style={{alignSelf: "center"}}/>
+            <p style={{marginLeft: '10px'}}>{user.location}</p>
+          </span>
         </div>
         <div className="buttons">
           <button className="btn-dislike">✖</button>

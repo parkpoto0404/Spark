@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [memberInfo, setMemberInfo] = useState(null); // 로그인 정보
   const [step,setStep] = useState(1); // 정보입력 순서관리
-  const [firstPage , setFirstPage ] = useState(false); // step2 에서 버튼클릭시 애니메이션 효과 방지
+  const [firstPage , setFirstPage ] = useState(false); 
 
   
 

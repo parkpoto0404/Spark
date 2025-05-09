@@ -94,6 +94,10 @@ const InsertInfo = () => {
         data.append('character2',formData.character); // 취미
         data.append('memInfo',formData.info)
         data.append('uploadFile',formData.profile[0]); // 사진
+
+        if(formData.profile.length <= 0){
+            return ;
+        }
         
 
         try {
