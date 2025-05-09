@@ -64,7 +64,7 @@ const Home = () => {
     {recommendations.map((user,key) =>(
 
       <div className="profile-card" key={key}>
-        <img className="profile-image" src={`http://localhost:8888/${user.profile}`} alt="프로필 이미지" />
+        <img className="profile-image" src={`http://localhost:8888${user.proFile}`} alt="프로필 이미지" />
         <div className="overlay">
           <h3>{user.nickName}&nbsp;&nbsp;{user.age}</h3>
           <span style={{marginTop: "10px", display: "flex"}}>
