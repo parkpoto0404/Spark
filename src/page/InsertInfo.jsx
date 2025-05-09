@@ -113,6 +113,7 @@ const InsertInfo = () => {
                     console.log('업로드 완료')
                     setMemberInfo(resdata); // 정보입력 후 화면은 step11 페이지에서 머무르고 있음 
                                             // 최신멤버로 업데이트를 하지않으면 제대로 이동이 안됨
+                    alert('정보입력 완료')
                     navi('/');
                 }else{
                     console.log('업로드 실패')
@@ -201,9 +202,8 @@ const InsertInfo = () => {
                     {step !== 11 && (<button
                         type='button'
                         className='next-btn'
-                        onClick={
-                            handleNext}
-                        disabled={!isStepValid()}
+                        onClick={handleNext}
+                        //disabled={!isStepValid()}
                     >
                         다음
                     </button>
@@ -213,7 +213,8 @@ const InsertInfo = () => {
                     {step === 11 && (<button
                         type='submit'
                         className='submit-btn'
-                        disabled={!isStepValid()}
+                        onClick={handleNext}
+                        //disabled={!isStepValid()}
                     >
                         완료
                     </button>)}

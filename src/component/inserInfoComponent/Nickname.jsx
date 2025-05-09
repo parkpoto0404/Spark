@@ -7,6 +7,11 @@ const NickName = ({ nickName, handleNickName ,setNickNameCheck}) => {
 
   const DuplicateCheck = async () => {
 
+    if(nickName === ''){
+      alert('닉네임을 작성해주세요.')
+      return;
+    }
+
     const accessToken = localStorage.getItem('jwt');
     try {
       const res = await fetch(`http://localhost:8888/spark/api/duplicateCheck?nickName=${nickName}`, {

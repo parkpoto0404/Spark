@@ -37,12 +37,15 @@ const Signup = () => {
       alert("잘못된 번호 형식입니다.");
       return;
     }
-    /*
+    
     alert('인증번호가 발송되었습니다')
     setSmsStatus(true);
-    */
     
-    try {
+    
+
+
+    /*  
+    try { // 인증번호 전송 api
       const res = await fetch('http://localhost:8888/spark/api/sms', {
         method: 'POST',
         headers: {
@@ -60,6 +63,7 @@ const Signup = () => {
     } catch (err) {
       console.log('인증실패', err);
     }
+      */
       
   
 
@@ -76,16 +80,20 @@ const Signup = () => {
     } else if (smsNumber === '') {
       alert('인증 번호를 입력해주세요.')
       return;
-    } else if(smsNumber === smsResult){
+    } 
+    /*
+    else if(smsNumber === smsResult){
       alert('인증성공')
       setAuthentication(true);
     }
-    /*
+      */
+
+    
     else {
       alert('인증 성공!')
       setAuthentication(true);
     }
-      */
+      
 
   }
 

@@ -2,11 +2,14 @@ import React, { useState } from "react";
 
 export const useInsertInfoHandlers = (step, setStep, formData, setFormData, setPreview, nickNameCheck) => {
 
+    
     const isStepValid = () => { // 정보입력 확인 핸들러
         console.log("Validating step", step);  // 현재 step을 확인
-        switch (step) {
+
+
+        switch (step) { // 해당 조건일때 step 숫자 반환!
             case 1: // 닉네임 입력 단계
-                return formData.nickName.trim() !== '' && nickNameCheck
+                return formData.nickName.trim() !== '' && nickNameCheck 
             case 2: // 성별 선택 단계
                 return formData.gender !== '';
             case 3: // 학력,주소 선택 단계
@@ -31,83 +34,64 @@ export const useInsertInfoHandlers = (step, setStep, formData, setFormData, setP
                 return false;
         }
     };
-
-    const showAlert = () => {
-        console.log("showAlert called");  // showAlert가 호출됐는지 확인
-        switch (step) {
-            case 1:
-                if (formData.nickName.trim() === '' || !nickNameCheck) {
-                    alert('닉네임을 입력하고 중복 확인을 완료하세요.');
-                }
-                break;
-            case 2:
-                if (formData.gender === '') {
-                    alert('성별을 선택하세요.');
-                }
-                break;
-            case 3:
-                if (formData.education === '' || formData.address === '') {
-                    alert('학력과 주소를 입력하세요.');
-                }
-                break;
-            case 4:
-                if (formData.birthday.length !== 8 || formData.job === '') {
-                    alert('생년월일(8자리)과 직업을 입력하세요.');
-                }
-                break;
-            case 5:
-                if (formData.religion === '' || formData.tall === '') {
-                    alert('종교와 키를 입력하세요.');
-                }
-                break;
-            case 6:
-                if (formData.mbti === '' || formData.smock === '') {
-                    alert('MBTI와 흡연 여부를 선택하세요.');
-                }
-                break;
-            case 7:
-                if (formData.interest.length === 0) {
-                    alert('관심사를 선택하세요.');
-                }
-                break;
-            case 8:
-                if (formData.tendencies.length === 0) {
-                    alert('성향을 선택하세요.');
-                }
-                break;
-            case 9:
-                if (formData.character.length === 0) {
-                    alert('성격을 선택하세요.');
-                }
-                break;
-            case 10:
-                if (formData.info === '') {
-                    alert('자기소개를 입력하세요.');
-                }
-                break;
-            case 11:
-                if (formData.profile.length === 0) {
-                    alert('프로필 사진을 등록해주세요.');
-                }
-                break;
-            default:
-                break;
-        }
-    };
-
     
 
 
-    const handleNext = () => { // 다음버튼
-        console.log('Current step:', step);  // 현재 step 상태 확인
-        if (step < 11) {
-            if (isStepValid()) {
-                setStep(prev => prev + 1); // 유효성 검사 통과 시, 다음 단계로 이동
-            } else {
-                showAlert(); // 유효하지 않으면 알림 띄움
+    const handleNext = () => {
+        
+        console.log('Current step:', step);
+    
+        const valid = isStepValid();
+    
+        if (!valid) {
+            switch (step) {
+                case 1:
+                    if (formData.nickName.trim() === '') {
+                        alert('닉네임을 입력해주세요');
+                    } else if (!nickNameCheck) {
+                        alert('중복확인을 해주세요');
+                    }
+                    break;
+                case 2:
+                    alert('성별을 선택해주세요');
+                    break;
+                case 3:
+                    alert('학력과 주소를 모두 선택해주세요');
+                    break;
+                case 4:
+                    alert('생년월일 8자리와 직업을 입력해주세요');
+                    break;
+                case 5:
+                    alert('종교와 키를 모두 선택해주세요');
+                    break;
+                case 6:
+                    alert('MBTI와 흡연 여부를 모두 선택해주세요');
+                    break;
+                case 7:
+                    alert('관심사를 1개 이상 선택해주세요(3개까지 가능)');
+                    break;
+                case 8:
+                    alert('연애 성향을 1개 이상 선택해주세요(3개까지 가능)');
+                    break;
+                case 9:
+                    alert('매력을 1개 이상 선택해주세요(3개까지 가능)');
+                    break;
+                case 10:
+                    alert('자기소개를 입력해주세요');
+                    break;
+                case 11:
+                    alert('프로필 사진을 업로드해주세요');
+                    break;
             }
+            return;
+        }
+    
+        if (step < 11) {
+            setStep(prev => prev + 1);
         }
     };
+
+
 
 
     
