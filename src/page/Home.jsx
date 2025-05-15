@@ -36,7 +36,7 @@ const Home = () => {
 
       setRecommendations(data); // 추천 리스트 저장
       console.log('추천 리스트:', data); 
-
+      
     } catch (error) {
       console.error(error);
     }
@@ -62,7 +62,6 @@ const Home = () => {
     <div className="container">
 
     {recommendations.map((user,key) =>(
-
       <div className="profile-card" key={key}>
         <img className="profile-image" src={`http://localhost:8888${user.proFile}`} alt="프로필 이미지" />
         <div className="overlay">
