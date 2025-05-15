@@ -36,7 +36,7 @@ const Home = () => {
 
       setRecommendations(data); // 추천 리스트 저장
       console.log('추천 리스트:', data); 
-
+      
     } catch (error) {
       console.error(error);
     }
