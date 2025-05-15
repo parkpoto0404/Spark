@@ -58,7 +58,7 @@ const Home = () => {
 
 
 
-  const hadleRecommendDelete = async (userId) => { // x 버튼
+  const hadleRecommendDelete = async (userId) => { // userId 는 사용자가 클릭한 유저id
 
     const token = localStorage.getItem("jwt");
     
@@ -83,8 +83,8 @@ const Home = () => {
       console.log("보내는 body:", JSON.stringify({ hiddenId: memberInfo.memId, hiddenTarget: userId }));
       console.log("보내는 token:", token);
 
-      setRecommendations((prev) => prev.filter((userId) => memberInfo.memId !== userId))
-      sparkUserList();
+      setRecommendations((prev) => prev.filter((user) => user.memId !== userId));
+      //sparkUserList();
 
     } catch(error) {
       console.error("싫어요 처리 중 오류:", error);
