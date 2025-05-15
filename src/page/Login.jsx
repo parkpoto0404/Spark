@@ -7,6 +7,8 @@ const Login = () => {
   const [pwd, setPwd] = useState("");
   const { setLoginCheck, setMemberInfo,setStep } = useAuthContext();
   const navi = useNavigate();
+  
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,7 +55,7 @@ const Login = () => {
   };
 
   return (
-    <div className="login_container">
+    <div className="login_container" >
       <h2>로그인</h2>
 
       <form id="loginForm" onSubmit={handleSubmit}>

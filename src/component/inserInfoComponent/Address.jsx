@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import CostomDorpDown from '../costomDropdown/dorpDown';
+import CostomDorpDown from './costomDropdown/dorpDown';
 
 const Address = ({ handleAddress, address }) => {
 

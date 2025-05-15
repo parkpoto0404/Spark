@@ -1,5 +1,5 @@
 import React from 'react'
-import SelectableList from '../SelectableList/SelectableList';
+import SelectableList from './SelectableList/SelectableList';
 
 
 

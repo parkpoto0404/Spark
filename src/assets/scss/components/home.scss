@@ -70,16 +70,32 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   }
   .btn-dislike {
-    background: white;
-    color: black;
-  }
-  .btn-like {
-    background: #ff2e7e;
+    background: #d63384;
     color: white;
   }
+  .btn-dislike:hover {
+    background: #fdfdfd;
+    color: rgb(0, 0, 0);
+  }
+
+
+  .btn-like {
+    background: #d63384;
+    color: white;
+  }
+  .btn-like:hover {
+    background: #fdfdfd;
+    color: rgb(239, 79, 79);
+  }
+
+
   .btn-chat {
     background: #d63384;
     color: white;
+  }
+  .btn-chat:hover {
+    background: #ffffff;
+    color: rgb(223, 223, 0);
   }
   
 

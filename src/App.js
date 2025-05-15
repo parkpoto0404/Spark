@@ -17,6 +17,7 @@ import Header from './component/section/Header';
 import Main from './component/section/Main';
 import Footer from './component/section/Footer';
 import PrivateRoute from './component/route/PrivateRoute';
+import Detail from './page/Detail';
 
 
 
@@ -88,6 +89,15 @@ function AppRoutes() {
         element={
           <PrivateRoute loginCheck={loginCheck} loading={loading}>
             <InsertInfo />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path='/detail'
+        element={
+          <PrivateRoute loginCheck={loginCheck} loading={loading}>
+            <Detail />
           </PrivateRoute>
         }
       />
