@@ -58,13 +58,53 @@ const Home = () => {
 
 
 
+  const hadleRecommendDelete = async (userId) => { // x 버튼
+
+    const token = localStorage.getItem("jwt");
+    
+    try{
+      const recommendDelete = await fetch ('http://localhost:8888/spark/api/recommendDelete',{
+        method : 'POST',
+        headers : {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body : JSON.stringify({
+          hiddenId : memberInfo.memId,
+          hiddenTarget : userId
+        })
+      });
+
+      if(!recommendDelete.ok){
+        throw new Error('x버튼 서버에 요청 실패');
+      }
+
+      console.log("디스라이크 요청 보냄: ", memberInfo.memId, userId);
+      console.log("보내는 body:", JSON.stringify({ hiddenId: memberInfo.memId, hiddenTarget: userId }));
+      console.log("보내는 token:", token);
+
+      setRecommendations((prev) => prev.filter((userId) => memberInfo.memId !== userId))
+      sparkUserList();
+
+    } catch(error) {
+      console.error("싫어요 처리 중 오류:", error);
+
+    }
+  } 
+
+
+
+
+
+
+
   return (
     <div className="container">
 
-    {recommendations.map((user,key) =>(
+    {recommendations.map((user,key) =>( // 배포시 이미지 경로 바꿔줘야함?!
 
       <div className="profile-card" key={key}>
-        <img className="profile-image" src={`http://localhost:8888${user.proFile}`} alt="프로필 이미지" />
+        <img className="profile-image" src={`http://localhost:8888${user.proFile}`} alt="프로필 이미지" /> 
         <div className="overlay">
           <h3>{user.nickName}&nbsp;&nbsp;{user.age}</h3>
           <span style={{marginTop: "10px", display: "flex"}}>
@@ -77,7 +117,7 @@ const Home = () => {
           </span>
         </div>
         <div className="buttons">
-          <button className="btn-dislike">✖</button>
+          <button className="btn-dislike" onClick={()=> hadleRecommendDelete(user.memId)}>✖</button>
           <button className="btn-like">❤</button>
           <button className="btn-chat">☆</button>
         </div>
