@@ -48,33 +48,49 @@
     };
 
 
+
+
+
     useEffect(() => {
-      if (!loading) {
+
+      const backFromDetail = sessionStorage.getItem('backFromDetail'); // 상세페이지에서 메인으로 넘어올때 상태를 구분
+      
         if (loading || !memberInfo) return;
     
         if (!memberInfo.nickName) {
-          navi('/insertInfo');
+          navi('/insertInfo'); // 닉네임이 없다면 정보입력페이지로!
           return;
         }
     
         // 이전 페이지에서 전달받은 추천 리스트가 있다면 복원
-        if (location.state?.recommendations) {
+        if (backFromDetail && location.state?.recommendations && location.state?.scrollY) {
           setRecommendations(location.state.recommendations);
+
+            setTimeout(() => {
+              window.scrollTo(0, location.state.scrollY);
+              sessionStorage.removeItem('backFromDetail'); 
+            }, 100); // 100ms 정도 딜레이
+
         } else {
-          sparkUserList(); // 없으면 새로 요청  
+            sparkUserList(); // 없으면 새로 요청 
+            setTimeout(() => {
+              window.scrollTo(0,0); // 위에 세션을 삭제해줌으로써 새로고침시 스크롤 초기화
+            }, 100); // 100ms 정도 딜레이
+            
         }
-      }
-    }, [loading, memberInfo, navi,location.state]);
+      
+    }, [loading, memberInfo, navi,location.state,location]);
+
+
+   
+    
 
 
 
-    useEffect(() => {
-      if (location.state?.scrollY) {
-        setTimeout(() => {
-          window.scrollTo(0, location.state.scrollY);
-        }, 100); // 100ms 정도 딜레이
-      }
-    }, [location]);
+
+
+
+
 
 
 

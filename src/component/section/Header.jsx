@@ -22,9 +22,10 @@ const Header = () => {
     navigate("/", {
       state: {
         recommendations : recommendations,
-        scrollY: scrollY || 0,
+        scrollY: scrollY,
       },
     });
+    sessionStorage.setItem('backFromDetail','true');
   };
 
   const handleBack = () => { // 정보입력페이지 뒤로가기 핸들러
