@@ -51,7 +51,7 @@ const Signup = () => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: phone
+        body: JSON.stringify({ phone })
       });
 
       if (!res.ok) throw new Error("인증 요청 실패");

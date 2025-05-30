@@ -89,9 +89,9 @@ const InsertInfo = () => {
         data.append('tall',formData.tall);
         data.append('religion',formData.religion); // 종교
         data.append('smock',formData.smock); // 흡연여부
-        data.append('interest2',formData.interest); // 관심사
-        data.append('tendencies2',formData.tendencies); // 연예성향
-        data.append('character2',formData.character); // 취미
+        data.append('interest',formData.interest); // 관심사
+        data.append('tendencies',formData.tendencies); // 연예성향
+        data.append('character',formData.character); // 취미
         data.append('memInfo',formData.info)
         data.append('uploadFile',formData.profile[0]); // 사진
 
