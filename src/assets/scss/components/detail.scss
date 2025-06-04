@@ -1,3 +1,34 @@
+
 .profile-header{
-    
+    margin-left: 10px;
 }
+
+.profile-data{
+    margin-top: 70px;
+    margin-left: 10px;
+}
+
+.user-data-1{
+    display: flex;
+    margin-top: 15px;
+}
+.user-data-2{
+    display: flex;
+    margin-top: 15px;
+}
+.user-data-3{
+    display: flex;
+    margin-top: 15px;
+}
+.profile-interest{
+    display: flex;
+}
+.interest-items{
+    width: 150px;
+    height: 45px;
+    background-color: gray;
+    border-radius: 10px;
+    text-align: center;
+    padding-top: 10px;
+}
+
