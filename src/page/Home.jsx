@@ -173,7 +173,7 @@ const Home = () => {
               <span style={{
                 width: '30px',
                 position: 'absolute',
-                left: '190px',
+                left: '200px',
                 zoom: '1.8',
                 cursor: 'pointer'
               }}

@@ -15,6 +15,8 @@ const Header = () => {
   const mainPage = location.pathname === '/';
   const detailPage = location.pathname === '/detail';
 
+  
+
 
 
   const goBackToHome = () => { // 상세보기에서 메인으로 뒤로가기 핸들러
