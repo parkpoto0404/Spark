@@ -29,12 +29,15 @@ const Detail = () => {
         const fetchDetailInfo = async () => {
             if (!user?.memId) return;
 
+            const token = localStorage.getItem("jwt");
+
             try {
                 const res = await fetch('http://localhost:8888/spark/api/DetailInfo', {
                     method: 'POST', 
                     credentials: 'include',
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}` // 토큰 보내기
                     },
                     body: JSON.stringify({ memId: user.memId }),
                     
@@ -60,10 +63,6 @@ const Detail = () => {
     const interestSplit = (detailData.interest || "").split(",");
     const characterSplit = (detailData.character || "").split(",");
     const tendenciesSplit = (detailData.tendencies || "").split(",");
-
-
-
-    
 
 
 
