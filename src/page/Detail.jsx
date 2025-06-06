@@ -10,27 +10,63 @@ import { PiCrownCrossFill } from "react-icons/pi";
 
 
 const Detail = () => {
+
     const location = useLocation();
+    const { user } = location.state || {};
+    const [detailData,setDetailData] = useState(null);
 
-    const { user } = location.state;
-    
-     useEffect(() => {
+
+
+    useEffect(() => {
         window.scrollTo(0, 0);
-      }, []);
-
-
-    if (!user) return <div>사용자 정보가 없습니다.</div>;
-
-    console.log('user', user)
-
-    const interestData = user.interest;
-    const interestSplit = interestData.split(",");
+    }, []);
 
     
+    console.log('user', user)
+     
+
+    useEffect(() => {
+        const fetchDetailInfo = async () => {
+            if (!user?.memId) return;
+
+            try {
+                const res = await fetch('http://localhost:8888/spark/api/DetailInfo', {
+                    method: 'POST', 
+                    credentials: 'include',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ memId: user.memId }),
+                    
+                });
+
+                if (!res.ok) throw new Error("상세정보 요청 실패");
+
+                const data = await res.json();
+                setDetailData(data); 
+                console.log("상세정보데이터: ",data);
+            } catch (err) {
+                console.error("err", err);
+            }
+        };
+
+        fetchDetailInfo();
+    }, [user]);
 
    
-        
-      
+    if (!user || !detailData) return <div>로딩 중...</div>;
+
+    // split을 안전하게 처리
+    const interestSplit = (detailData.interest || "").split(",");
+    const characterSplit = (detailData.character || "").split(",");
+    const tendenciesSplit = (detailData.tendencies || "").split(",");
+
+
+
+    
+
+
+
 
     return (
         <div className="container">
@@ -41,19 +77,19 @@ const Detail = () => {
             <div className="profile-header">
                 <div style={{ display: 'flex' }}>
                     <h1>
-                        <b>{user.nickName}&nbsp;&nbsp;{user.age}</b>
+                        <b>{detailData.nickName}&nbsp;&nbsp;{detailData.age}</b>
                     </h1>
                 </div>
                 <span style={{ marginTop: "25px", display: "flex" }}>
                     <PiBagSimpleFill style={{ alignSelf: "center", color: "black", zoom: "1.7" }} />
                     <p style={{ marginLeft: '10px' ,fontSize: "20px" }}>
-                        {user.occupation} {/*직업*/}
+                        <b>{detailData.occupation}</b> {/*직업*/}
                     </p>
                 </span>
                 <span style={{ display: "flex" , marginTop: "20px"}}>
                     <IoLocationSharp style={{ alignSelf: "center", color: "#black", zoom: "1.7" }} />
                     <p style={{ marginLeft: '10px' ,fontSize: "20px" }}>
-                        {user.location} {/*주소*/}
+                        <b>{detailData.location}</b> {/*주소*/}
                     </p>
                 </span>
             </div>
@@ -65,13 +101,13 @@ const Detail = () => {
                         <span style={{ marginTop: "10px", display: "flex" }}>
                             <IoMdSchool style={{ alignSelf: "center", zoom: "1.7" }}/>
                             <p style={{ marginLeft: '10px' ,fontSize: "20px" }}>
-                                {user.education} {/*학력*/}
+                                <b>{detailData.education}</b> {/*학력*/}
                             </p>
                         </span>
                         <span style={{ marginTop: "10px", display: "flex" , marginLeft : "120px"}}>
                             <RiRulerFill style={{ alignSelf: "center", zoom: "1.7" }}/>
                             <p style={{ marginLeft: '10px',fontSize: "20px"  }}>
-                                {user.tall} {/*키*/}
+                                <b>{detailData.tall}</b> {/*키*/}
                             </p>
                         </span>
                     </div>
@@ -79,13 +115,13 @@ const Detail = () => {
                         <span style={{ marginTop: "10px", display: "flex" }}>
                             <MdOutlineSmokingRooms style={{ alignSelf: "center", zoom: "1.7" }}/>
                             <p style={{ marginLeft: '10px',fontSize: "20px"  }}>
-                                {user.smock} {/*키*/}
+                                <b>{detailData.smock}</b> {/*흡연*/}
                             </p>
                         </span>
-                        <span style={{ marginTop: "10px", display: "flex" , marginLeft : "168px"}}>
+                        <span style={{ marginTop: "10px", display: "flex" , left : "222px", position: "absolute"}}>
                             <FaSmileWink style={{ alignSelf: "center", zoom: "1.7" }}/>
                             <p style={{ marginLeft: '10px',fontSize: "20px"  }}>
-                                {user.mbti} {/*mbti*/}
+                                <b>{detailData.mbti}</b> {/*mbti*/}
                             </p>
                         </span>
                     </div>
@@ -93,18 +129,43 @@ const Detail = () => {
                         <span style={{ marginTop: "10px", display: "flex" }}>
                             <PiCrownCrossFill style={{ alignSelf: "center", zoom: "1.7" }}/>
                             <p style={{ marginLeft: '10px',fontSize: "20px"  }}>
-                                {user.religion} {/*종교*/}
+                                <b>{detailData.religion}</b> {/*종교*/}
                             </p>
                         </span>
                     </div>
 
-                    <h2 style={{marginTop: "70px"}}><b>취미</b></h2>
-                    <div className='profile-interest'>
+                    <h2 style={{marginTop: "50px"}}><b>관심사</b></h2>
+                    <div className='profile-mind-list'>
                         {interestSplit.map((item,idx)=>(
-                            <span className='interest-items'>
-                                <p key={idx}>{item}</p>
+                            <span className='list-items' id={`item-i-${idx}`}>
+                                <p key={idx}><b>{item}</b></p>
                             </span>
                         ))}
+                    </div>
+
+                    <h2 style={{marginTop: "50px"}}><b>성격</b></h2>
+                    <div className='profile-mind-list'>
+                        {characterSplit.map((item,idx)=>(
+                            <span className='list-items' id={`item-c-${idx}`}>
+                                <p key={idx}><b>{item}</b></p>
+                            </span>
+                        ))}
+                    </div>
+
+                    <h2 style={{marginTop: "50px"}}><b>연예성향</b></h2>
+                    <div className='profile-mind-list'>
+                        {tendenciesSplit.map((item,idx)=>(
+                            <span className='list-items' id={`item-t-${idx}`}>
+                                <p key={idx}><b>{item}</b></p>
+                            </span>
+                        ))}
+                    </div>
+
+                    <h2 style={{marginTop: "50px"}}><b>소개</b></h2>
+                    <div className='profile-myInfo'>
+                        <div>
+                            {detailData.memInfo}
+                        </div>
                     </div>
 
 
