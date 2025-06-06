@@ -148,7 +148,7 @@ const Home = () => {
       state: {
         user,
         recommendations,
-        scrollY: window.scrollY,
+        scrollY: window.scrollY || 1,
       }
     }) // 객체형식으로 user 정보를 보낼 수 있음
   }

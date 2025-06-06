@@ -103,7 +103,7 @@ const Detail = () => {
                                 <b>{detailData.education}</b> {/*학력*/}
                             </p>
                         </span>
-                        <span style={{ marginTop: "10px", display: "flex" , marginLeft : "120px"}}>
+                        <span style={{ marginTop: "10px", display: "flex" , marginLeft : "185px", position: "absolute"}}>
                             <RiRulerFill style={{ alignSelf: "center", zoom: "1.7" }}/>
                             <p style={{ marginLeft: '10px',fontSize: "20px"  }}>
                                 <b>{detailData.tall}</b> {/*키*/}
@@ -117,7 +117,7 @@ const Detail = () => {
                                 <b>{detailData.smock}</b> {/*흡연*/}
                             </p>
                         </span>
-                        <span style={{ marginTop: "10px", display: "flex" , left : "222px", position: "absolute"}}>
+                        <span style={{ marginTop: "10px", display: "flex" ,marginLeft: "185px", position: "absolute"}}>
                             <FaSmileWink style={{ alignSelf: "center", zoom: "1.7" }}/>
                             <p style={{ marginLeft: '10px',fontSize: "20px"  }}>
                                 <b>{detailData.mbti}</b> {/*mbti*/}
@@ -136,8 +136,8 @@ const Detail = () => {
                     <h2 style={{marginTop: "50px"}}><b>관심사</b></h2>
                     <div className='profile-mind-list'>
                         {interestSplit.map((item,idx)=>(
-                            <span className='list-items' id={`item-i-${idx}`}>
-                                <p key={idx}><b>{item}</b></p>
+                            <span className='list-items' id={`item-i-${idx}`} key={idx}>
+                                <p><b>{item}</b></p>
                             </span>
                         ))}
                     </div>
@@ -145,8 +145,8 @@ const Detail = () => {
                     <h2 style={{marginTop: "50px"}}><b>성격</b></h2>
                     <div className='profile-mind-list'>
                         {characterSplit.map((item,idx)=>(
-                            <span className='list-items' id={`item-c-${idx}`}>
-                                <p key={idx}><b>{item}</b></p>
+                            <span className='list-items' id={`item-c-${idx}`} key={idx}>
+                                <p><b>{item}</b></p>
                             </span>
                         ))}
                     </div>
@@ -154,8 +154,8 @@ const Detail = () => {
                     <h2 style={{marginTop: "50px"}}><b>연예성향</b></h2>
                     <div className='profile-mind-list'>
                         {tendenciesSplit.map((item,idx)=>(
-                            <span className='list-items' id={`item-t-${idx}`}>
-                                <p key={idx}><b>{item}</b></p>
+                            <span className='list-items' id={`item-t-${idx}`} key={idx}>
+                                <p><b>{item}</b></p>
                             </span>
                         ))}
                     </div>
