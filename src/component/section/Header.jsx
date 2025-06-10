@@ -30,6 +30,19 @@ const Header = () => {
     sessionStorage.setItem('backFromDetail', 'true');
   };
 
+  /* 브라우저 뒤로가기 시에도 가능한지 확인하고 구현해볼것!
+  navigate(-1, {
+      state: {
+        recommendations: recommendations,
+        scrollY: scrollY,
+      },
+    });
+    sessionStorage.setItem('backFromDetail', 'true');
+  };
+  */
+
+
+
   const handleBack = () => { // 정보입력페이지 뒤로가기 핸들러
     setStep(prev => prev > 1 ? prev - 1 : prev); // 1보다 클 때만 감소
 
