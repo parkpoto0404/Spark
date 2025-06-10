@@ -39,7 +39,7 @@ const Header = () => {
     });
     sessionStorage.setItem('backFromDetail', 'true');
   };
-  */
+  *///
 
 
 
