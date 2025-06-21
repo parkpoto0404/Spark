@@ -74,7 +74,11 @@ const Header = () => {
 
       {mainPage && (
         <div style={{ display: 'flex' }}>
-          <span style={{ alignContent: 'center' }}><h2>소개팅 추천</h2></span>
+          <span style={{ alignContent: 'center' }}>
+            <span style={{ marginLeft : "175px"}}>
+              <img src="/spark_logo2.png" alt="" style={{ width : "90px"}}/>
+            </span>
+          </span>
         </div>
       )}
 

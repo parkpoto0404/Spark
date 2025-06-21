@@ -11,7 +11,11 @@ const Home = () => {
   const { memberInfo, loading } = useAuthContext();
   const [recommendations, setRecommendations] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [deleteUserId, setDeleteUserId] = useState(null);  // 삭제할 유저 ID 저장용 상태
+  const [modalType, setModalType] = useState(); // 모달 타입 (추천제외,좋아요,관심)
+  const [deleteUserId, setDeleteUserId] = useState(null);  // 추천제외 할 유저 ID 저장용
+  const [likeUserId, setLikeUserId] = useState(null);  // 좋아요 유저 ID 저장용
+  const [requestUserId, setRequestUserId] = useState(); // 좋아요 응답 유저 아이디
+  const [likeRequestSuccess, setLikeRequestSuccess] = useState({}); // 좋아요 요청 완료 저장용 / 객체형태
   const navi = useNavigate();
   const location = useLocation();
 
@@ -51,7 +55,7 @@ const Home = () => {
 
 
 
-  useEffect(() => {
+  useEffect(() => { // 뒤로가기 스크롤 위치와 리스트 복원용
 
     const backFromDetail = sessionStorage.getItem('backFromDetail'); // 상세페이지에서 메인으로 넘어올때 상태를 구분
 
@@ -84,7 +88,9 @@ const Home = () => {
 
 
 
-  const handleRecommendDelete = async (userId) => { // userId 는 사용자가 클릭한 유저id
+
+  // 추천 제외 핸들러
+  const handleRecommendDelete = async (userId) => { // userId 는 사용자가 클릭한 유저의 id
 
     const token = localStorage.getItem("jwt");
 
@@ -105,12 +111,11 @@ const Home = () => {
         throw new Error('x버튼 서버에 요청 실패');
       }
 
-      console.log("디스라이크 요청 보냄: ", memberInfo.memId, userId);
-      console.log("보내는 body:", JSON.stringify({ hiddenId: memberInfo.memId, hiddenTarget: userId }));
-      console.log("보내는 token:", token);
+      //console.log("디스라이크 요청 보냄: ", memberInfo.memId, userId);
+      //console.log("보내는 body:", JSON.stringify({ hiddenId: memberInfo.memId, hiddenTarget: userId }));
+      //console.log("보내는 token:", token);
 
       setRecommendations((prev) => prev.filter((user) => user.memId !== userId));
-
 
     } catch (error) {
       console.error("싫어요 처리 중 오류:", error);
@@ -121,13 +126,61 @@ const Home = () => {
 
 
 
-  // X 버튼 클릭 시 모달 띄우기
-  const handleClickDeleteBtn = (userId) => {
-    setDeleteUserId(userId);
+  // 좋아요 신청 핸들러
+  const handleRequestLike = async (userId) => {
+
+    const token = localStorage.getItem("jwt");
+
+    try {
+      const requestLike = await fetch('http://localhost:8888/spark/api/like', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          requestId: memberInfo.memId,
+          responseId: userId
+        })
+      });
+
+      if (!requestLike.ok) {
+        throw new Error('하트버튼 서버에 요청 실패');
+      }
+      console.log("디스라이크 요청 보냄: ", memberInfo.memId, userId);
+      console.log("보내는 body:", JSON.stringify({ requestId: memberInfo.memId, responseId: userId }));
+      console.log("보내는 token:", token);
+
+      // 특정 유저에 대해 좋아요 요청 성공 처리
+      setLikeRequestSuccess((prev) => ({
+        ...prev,
+        [userId]: true
+      }));
+
+    } catch (error) {
+      console.error("싫어요 처리 중 오류:", error);
+
+    }
+
+  }
+
+
+
+  // X , 하트, 별 버튼 클릭 시 모달 띄우기
+  const handleClickModalBtn = (userId) => {
+    if (showModal) return; // 이미 모달 열려있으면 중복 실행 막기
+    if (modalType === "x") {
+      setDeleteUserId(userId);
+    } else if (modalType === "hart") {
+      setLikeUserId(userId);
+    }
     setShowModal(true);
+
   };
 
-  // 모달 확인 버튼 눌렀을 때 실제 삭제 함수 호출
+
+
+  // 추천제외 모달 확인 버튼 눌렀을 때 실제 삭제 함수 호출
   const confirmDelete = () => {
     if (deleteUserId) {
       handleRecommendDelete(deleteUserId);
@@ -136,11 +189,42 @@ const Home = () => {
     setDeleteUserId(null);
   };
 
-  // 모달 취소 버튼 눌렀을 때
-  const cancelDelete = () => {
+  // 좋아요 모달 확인 버튼 눌렀을 때 실제 삭제 함수 호출
+  const confirmLike = () => {
+    if (likeUserId && !likeRequestSuccess[likeUserId]) {
+      handleRequestLike(likeUserId);
+    }
     setShowModal(false);
-    setDeleteUserId(null);
+    setLikeUserId(null);
   };
+
+  // 모달 취소 버튼 눌렀을 때
+  const modalCancelBtn = () => {
+    if (modalType === "x") {
+      setDeleteUserId(null);
+    } else if (modalType === "hart") {
+      setLikeUserId(null);
+    }
+    setShowModal(false);
+  };
+
+
+  useEffect(() => { // 모달 나올시 외부 스크롤 막기
+    if (showModal) {
+      document.body.style.overflow = 'hidden';  // 스크롤 차단
+    } else {
+      document.body.style.overflow = 'auto';    // 스크롤 복원
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [showModal]);
+
+
+
+
+
 
 
   const goDetailPage = (user) => {
@@ -194,22 +278,48 @@ const Home = () => {
 
           </div>
           <div className="buttons">
-            <button className="btn-dislike" onClick={() => handleClickDeleteBtn(user.memId)}>✖</button>
-            <button className="btn-like">❤</button>
+            <button className="btn-dislike" onClick={() => {
+              handleClickModalBtn(user.memId);
+              setModalType("x");
+            }}>✖</button>
+            <button className="btn-like" disabled={likeRequestSuccess[user.memId] || showModal}
+              style={{
+                background: likeRequestSuccess[user.memId] ? "#fdfdfd" : "#d63384",
+                color: likeRequestSuccess[user.memId] ? "rgb(239, 79, 79)" : "white",
+              }}
+              onClick={() => {
+                if (!likeRequestSuccess[user.memId] && !showModal) {
+
+                  handleClickModalBtn(user.memId);
+                  setModalType("hart");
+                  setRequestUserId(user.nickName);
+                }
+              }}>❤</button>
             <button className="btn-chat">★</button>
           </div>
         </div>
 
       ))}
 
-      {/* 삭제 확인용 모달 */}
-      {showModal && (
+      {/* 추천 제외 모달 */}
+      {showModal && modalType === "x" && (
         <HomeModal
           message="더이상 추천되지 않습니다. 제외하시겠습니까?"
           onConfirm={confirmDelete}
-          onCancel={cancelDelete}
+          onCancel={modalCancelBtn}
         />
       )}
+      {/* 좋아요 모달 */}
+      {showModal && modalType === "hart" && (
+        <HomeModal
+          className="home-modal"
+          message={`${requestUserId}님께 좋아요를 보내시겠습니까?`}
+          onConfirm={confirmLike}
+          onCancel={modalCancelBtn}
+        />
+      )}
+
+
 
 
 
