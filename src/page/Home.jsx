@@ -278,16 +278,16 @@ const Home = () => {
           </div>
           <div className="buttons">
             <button className="btn-dislike" onClick={() => {
-              setModalType("x");
+              //setModalType("x");
               setTimeout(() => handleClickModalBtn(user.memId,"x"), 0);
             }}>✖</button>
             <button className="btn-like" 
               onClick={() => {
-                if (!showModal) {
-                  setModalType("hart");
+                
+                  //setModalType("hart");
                   setRequestUserId(user.nickName);
-                  setTimeout(() => handleClickModalBtn(user.memId,"hart"), 10); // 다음 tick에 실행
-                }
+                  setTimeout(() => handleClickModalBtn(user.memId,"hart"), 0); // 다음 tick에 실행
+                
               }}>❤</button>
             <button className="btn-chat">★</button>
           </div>

@@ -15,6 +15,7 @@ const Header = () => {
   const mainPage = location.pathname === '/';
   const detailPage = location.pathname === '/detail';
   const likePage = location.pathname === '/like';
+  const myPage = location.pathname === '/myPage';
 
   
 
@@ -73,7 +74,7 @@ const Header = () => {
         </div>
       )}
 
-      {mainPage && (
+      {(mainPage || likePage || myPage) && (
         <div style={{ display: 'flex' }}>
           <span style={{ alignContent: 'center' }}>
             <span style={{ marginLeft : "175px"}}>
@@ -82,15 +83,7 @@ const Header = () => {
           </span>
         </div>
       )}
-      {likePage && (
-        <div style={{ display: 'flex' }}>
-          <span style={{ alignContent: 'center' }}>
-            <span style={{ marginLeft : "175px"}}>
-              <img src="/spark_logo2.png" alt="" style={{ width : "90px"}}/>
-            </span>
-          </span>
-        </div>
-      )}
+      
 
       {insertInfoPage && (
         <div style={{ display: 'flex' }}>

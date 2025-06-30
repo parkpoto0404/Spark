@@ -8,7 +8,7 @@ const Mypage = () => {
   const { setLoginCheck } = useAuthContext();
   const refreshToken = localStorage.getItem('refreshToken');
   const accessToken = localStorage.getItem('jwt');
-  
+
   const logingOut= async ()=>{
     
     const confirmLogout = window.confirm('로그아웃 하시겠습니까?');
@@ -44,8 +44,10 @@ const Mypage = () => {
 
   return (
     <div>
-        <div className=''>
-
+        <div className='myPage-info'>
+          <div className=''>
+            <span></span>
+          </div>
         </div>
        <button onClick={logingOut}>로그아웃</button>
     </div>
