@@ -151,11 +151,8 @@ const Home = () => {
       console.log("보내는 body:", JSON.stringify({ requestId: memberInfo.memId, responseId: userId }));
       console.log("보내는 token:", token);
 
-      // 특정 유저에 대해 좋아요 요청 성공 처리
-      setLikeRequestSuccess((prev) => ({
-        ...prev,
-        [userId]: true
-      }));
+      setRecommendations((prev) => prev.filter((user) => user.memId !== userId));
+      
 
     } catch (error) {
       console.error("싫어요 처리 중 오류:", error);
@@ -167,13 +164,14 @@ const Home = () => {
 
 
   // X , 하트, 별 버튼 클릭 시 모달 띄우기
-  const handleClickModalBtn = (userId) => {
+  const handleClickModalBtn = (userId , type) => {
     if (showModal) return; // 이미 모달 열려있으면 중복 실행 막기
-    if (modalType === "x") {
+    if (type === "x") {
       setDeleteUserId(userId);
-    } else if (modalType === "hart") {
+    } else if (type === "hart") {
       setLikeUserId(userId);
     }
+    setModalType(type);
     setShowModal(true);
 
   };
@@ -191,8 +189,9 @@ const Home = () => {
 
   // 좋아요 모달 확인 버튼 눌렀을 때 실제 삭제 함수 호출
   const confirmLike = () => {
-    if (likeUserId && !likeRequestSuccess[likeUserId]) {
+    if (likeUserId ) {
       handleRequestLike(likeUserId);
+      
     }
     setShowModal(false);
     setLikeUserId(null);
@@ -279,20 +278,15 @@ const Home = () => {
           </div>
           <div className="buttons">
             <button className="btn-dislike" onClick={() => {
-              handleClickModalBtn(user.memId);
               setModalType("x");
+              setTimeout(() => handleClickModalBtn(user.memId,"x"), 0);
             }}>✖</button>
-            <button className="btn-like" disabled={likeRequestSuccess[user.memId] || showModal}
-              style={{
-                background: likeRequestSuccess[user.memId] ? "#fdfdfd" : "#d63384",
-                color: likeRequestSuccess[user.memId] ? "rgb(239, 79, 79)" : "white",
-              }}
+            <button className="btn-like" 
               onClick={() => {
-                if (!likeRequestSuccess[user.memId] && !showModal) {
-
-                  handleClickModalBtn(user.memId);
+                if (!showModal) {
                   setModalType("hart");
                   setRequestUserId(user.nickName);
+                  setTimeout(() => handleClickModalBtn(user.memId,"hart"), 10); // 다음 tick에 실행
                 }
               }}>❤</button>
             <button className="btn-chat">★</button>
