@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useLocation } from "react-router-dom";
 import { IoLocationSharp } from "react-icons/io5";
 import { PiBagSimpleFill } from "react-icons/pi";
 import { IoMdSchool } from "react-icons/io";

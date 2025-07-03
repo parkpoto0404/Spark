@@ -1,13 +1,10 @@
-import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../context/AuthContext';
+import { useAuthContext } from '../../context/AuthContext';
 
 const Mypage = () => {
 
   const navigate = useNavigate();
   const { setLoginCheck } = useAuthContext();
-  const refreshToken = localStorage.getItem('refreshToken');
-  const accessToken = localStorage.getItem('jwt');
 
   const logingOut= async ()=>{
     

@@ -1,22 +1,22 @@
-import React, { useState} from 'react';
+import { useState} from 'react';
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../context/AuthContext";
-import NickName from '../component/inserInfoComponent/Nickname';
-import Education from '../component/inserInfoComponent/Education';
-import Gender from '../component/inserInfoComponent/Gender';
-import Address from '../component/inserInfoComponent/Address';
-import Job from '../component/inserInfoComponent/Job';
-import BirthDay from '../component/inserInfoComponent/BirthDay';
-import Religion from '../component/inserInfoComponent/Religion';
-import Tall from '../component/inserInfoComponent/Tall';
-import MBTI from '../component/inserInfoComponent/Mbti';
-import Smock from '../component/inserInfoComponent/Smock';
-import Interest from '../component/inserInfoComponent/Interest';
-import Tendencies from '../component/inserInfoComponent/Tendencies';
-import Character from '../component/inserInfoComponent/Character';
-import MyProfile from '../component/inserInfoComponent/MyProfile';
-import MyInfo from '../component/inserInfoComponent/MyInfo';
-import { useInsertInfoHandlers } from '../hooks/useInsertInfoHandlers';
+import { useAuthContext } from "../../context/AuthContext";
+import NickName from './inserInfoComponent/Nickname';
+import Education from './inserInfoComponent/Education';
+import Gender from './inserInfoComponent/Gender';
+import Address from './inserInfoComponent/Address';
+import Job from './inserInfoComponent/Job';
+import BirthDay from './inserInfoComponent/BirthDay';
+import Religion from './inserInfoComponent/Religion';
+import Tall from './inserInfoComponent/Tall';
+import MBTI from './inserInfoComponent/Mbti';
+import Smock from './inserInfoComponent/Smock';
+import Interest from './inserInfoComponent/Interest';
+import Tendencies from './inserInfoComponent/Tendencies';
+import Character from './inserInfoComponent/Character';
+import MyProfile from './inserInfoComponent/MyProfile';
+import MyInfo from './inserInfoComponent/MyInfo';
+import { useInsertInfoHandlers } from './hooks/useInsertInfoHandlers';
 
 
 
@@ -64,8 +64,6 @@ const InsertInfo = () => {
         handleCharacter,
         handleMyInfo,
         handleProfile,
-        isStepValid,
-    
 
       } = useInsertInfoHandlers(step,setStep,formData, setFormData, setPreview,nickNameCheck);
 

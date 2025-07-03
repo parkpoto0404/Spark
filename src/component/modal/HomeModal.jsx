@@ -1,5 +1,3 @@
-import React from 'react'
-
 const HomeModal = ({ message, onConfirm, onCancel }) => {
     return (
       <div className='modal-overlay' >
