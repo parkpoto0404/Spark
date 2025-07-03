@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useAuthContext } from "../context/AuthContext";
+import { useAuthContext } from "../../context/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoLocationSharp } from "react-icons/io5";
 import { PiBagSimpleFill } from "react-icons/pi";
 import { FiAlertCircle } from "react-icons/fi";
-import HomeModal from '../modal/HomeModal';
+import HomeModal from '../../component/modal/HomeModal';
 
 const Home = () => {
 
@@ -15,7 +15,6 @@ const Home = () => {
   const [deleteUserId, setDeleteUserId] = useState(null);  // 추천제외 할 유저 ID 저장용
   const [likeUserId, setLikeUserId] = useState(null);  // 좋아요 유저 ID 저장용
   const [requestUserId, setRequestUserId] = useState(); // 좋아요 응답 유저 아이디
-  const [likeRequestSuccess, setLikeRequestSuccess] = useState({}); // 좋아요 요청 완료 저장용 / 객체형태
   const navi = useNavigate();
   const location = useLocation();
 
@@ -286,7 +285,7 @@ const Home = () => {
                 
                   //setModalType("hart");
                   setRequestUserId(user.nickName);
-                  setTimeout(() => handleClickModalBtn(user.memId,"hart"), 0); // 다음 tick에 실행
+                  setTimeout(() => handleClickModalBtn(user.memId,"hart"), 0);
                 
               }}>❤</button>
             <button className="btn-chat">★</button>
