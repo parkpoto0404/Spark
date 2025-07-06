@@ -3,21 +3,21 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider, useAuthContext } from './context/AuthContext';
 import { useLocation } from 'react-router-dom';
 
-import Home from './page/Home/Home';
-import Login from './page/Login/Login';
-import Pwdfind from './page/Pwdfind/Pwdfind';
-import Signup from './page/SignUp/Signup';
-import Like from './page/Like/Like';
-import Feed from './page/Feed/Feed';
-import Mypage from './page/Mypage/Mypage';
-import Chat from './page/Chat/Chat';
+import Home from './page/home/Home';
+import Login from './page/login/Login';
+import Pwdfind from './page/pwdfind/Pwdfind';
+import Signup from './page/signUp/Signup';
+import Like from './page/like/Like';
+import Feed from './page/feed/Feed';
+import Mypage from './page/mypage/Mypage';
+import Chat from './page/chat/Chat';
 import InsertInfo from './page/InsertInfo/InsertInfo';
 import Not from './page/Not';
 import Header from './component/section/Header';
 import Main from './component/section/Main';
 import Footer from './component/section/Footer';
 import PrivateRoute from './component/route/PrivateRoute';
-import Detail from './page/Detail/Detail';
+import Detail from './page/detail/Detail';
 
 
 

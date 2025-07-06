@@ -1,149 +1,202 @@
 .container {
-    width: 100%;
-    max-width: 430px;
-    margin: 0 auto;
-    padding-bottom: 80px;
-    position: relative;
-  }
-  .top-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px;
-    font-weight: bold;
-    font-size: 16px;
-    border-bottom: 1px solid #eee;
-    position: sticky;
-    top: 0;
-    background: white;
-    z-index: 10;
-  }
-  .profile-card {
-    position: relative;
-    width: 100%;
-    height: calc(100vh - 210px);
-    overflow: hidden;
-    border-radius: 0;
-    margin-bottom: 20px;
-  }
-  .profile-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 15px;
-  }
-  .overlay {
-    position: absolute;
-    bottom: 120px;
-    left: 0;
-    width: 100%;
-    padding: 0 20px;
-    color: white;
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+  position: relative;
+}
 
-    .overlay h3 {
-        margin: 0;
-        font-size: 22px;
-      }
-      .overlay p {
-        margin: 6px 0;
-        font-size: 15px;
-      }
-  }
-  
-  .buttons {
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-    gap: 20px;
-  }
-  .buttons button {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  }
-  .btn-dislike {
-    background: #d63384;
-    color: white;
-  }
-  .btn-dislike:hover {
-    background: #fdfdfd;
-    color: rgb(0, 0, 0);
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  font-weight: bold;
+  font-size: 16px;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+}
+
+.profile-card {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 210px);
+  overflow: hidden;
+  border-radius: 0;
+  margin-bottom: 20px;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 120px;
+  left: 0;
+  width: 100%;
+  padding: 0 20px;
+  color: white;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+
+  .overlay h3 {
+    margin: 0;
+    font-size: 22px;
   }
 
-
-  .btn-like {
-    background: #d63384;
-    color: white;
+  .overlay p {
+    margin: 6px 0;
+    font-size: 15px;
   }
-  .btn-like:hover {
-    background: #fdfdfd;
-    color: rgb(239, 79, 79);
-  }
+}
+
+.buttons {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 20px;
+}
+
+.buttons button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-dislike {
+  background: #d63384;
+  color: white;
+}
+
+.btn-dislike:hover {
+  background: #fdfdfd;
+  color: rgb(0, 0, 0);
+}
 
 
-  .btn-chat {
-    background: #d63384;
-    color: white;
-  }
-  .btn-chat:hover {
-    background: #ffffff;
-    color: rgb(223, 223, 0);
-  }
-  
+.btn-like {
+  background: #d63384;
+  color: white;
+}
 
-  .modal-overlay{
-      position: fixed;
-      top: 0; 
-      left: 0; 
-      right: 0; 
-      bottom: 0;
-      background-color: rgba(0,0,0,0.5);
+.btn-like:hover {
+  background: #fdfdfd;
+  color: rgb(239, 79, 79);
+}
+
+
+.btn-chat {
+  background: #d63384;
+  color: white;
+}
+
+.btn-chat:hover {
+  background: #ffffff;
+  color: rgb(223, 223, 0);
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  .modal {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    width: 380px;
+    text-align: center;
+
+
+    .modal-btns {
+      margin-top: 20px;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
+      justify-content: space-around;
 
-      .modal{
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        max-width: 300px;
-        text-align: center;
-
-
-        .modal-btns{
-          margin-top: 20px;
-          display: flex;
-          justify-content: space-around;
-
-          .modal-confirmBtn{
-            background-color: #ff2e7e;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-right: 15px
-          }
-
-          .modal-cancelBtn{
-            background-color: #ccc;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-          }
-
-
-        }
+      .modal-confirmBtn {
+        background-color: #ff2e7e;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 15px
       }
+
+      .modal-cancelBtn {
+        background-color: #ccc;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+
+    }
   }
+
+}
+
+
+.alertmodal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+
+  .alert-modal {
+    background-color: #fff;
+    padding: 50px;
+    border-radius: 8px;
+    width: 380px;
+    text-align: center;
+
+
+    .aler-tmodal-btns {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-around;
+
+
+      .alert-modal-cancelBtn {
+        background-color: #ff2e7e;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+
+    }
+  }
+
+}
+
 
