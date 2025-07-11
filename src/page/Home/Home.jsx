@@ -157,7 +157,7 @@ const Home = () => {
 
 
   useEffect(() => { // 모달 나올시 외부 스크롤 막기
-    if (showModal) {
+    if (showModal||showAlertModal) {
       document.body.style.overflow = 'hidden';  // 스크롤 차단
     } else {
       document.body.style.overflow = 'auto';    // 스크롤 복원
@@ -166,7 +166,7 @@ const Home = () => {
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [showModal]);
+  }, [showModal,showAlertModal]);
 
 
 
