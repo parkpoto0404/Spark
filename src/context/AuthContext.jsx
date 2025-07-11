@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
 
   const [memberInfo, setMemberInfo] = useState(null); // 로그인 정보
   const [step,setStep] = useState(1); // 정보입력 순서관리
+  const [memId,setMemId] = useState(null);
   
 
   
@@ -42,6 +43,8 @@ export const AuthProvider = ({ children }) => {
       if (res.ok && data.valid) {
         setLoginCheck(true);
         setMemberInfo(data.memberDto)
+        setMemId(data.memberDto.memId)
+        console.log("멤버아이디",data.memberDto.memId);
       } else {
         //console.log('토큰 만료 → 리프레시 시도');
 
@@ -90,6 +93,7 @@ export const AuthProvider = ({ children }) => {
                                    setMemberInfo,
                                    step,
                                    setStep,
+                                   memId
                                      }}>  
                                    
                                    {children} </AuthContext.Provider>

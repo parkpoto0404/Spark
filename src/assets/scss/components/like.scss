@@ -1,12 +1,69 @@
-.like-header{
-    border-bottom: 2px solid #80808047;
-    height: 55px;
-
-    b{
-       margin-left: 15px; 
-    }
-}
-.like-list-name{
-    display: flex;
+.like-contain {
+  width: 100%;
+  max-width: 480px;
+  margin: 30px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.like-header {
+  border-bottom: 2px solid #e2e2e2;
+  padding: 10px 0;
+}
+
+.like-header b {
+  margin-left: 15px;
+  font-size: 1.6rem;
+  color: #222;
+}
+
+.like-list-box {
+  margin-top: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  padding: 15px 20px;
+  transition: all 0.2s ease-in-out;
+}
+
+.list-list-info {
+  display: flex;
+  align-items: center;
+}
+
+.like-list-img-contain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.like-profile-img img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid #f1f1f1;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.like-profile-img img:hover {
+  transform: scale(1.05);
+}
+
+.like-list-name {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+}
+
+.like-name {
+  font-size: 1.3rem;
+  color: #333;
+}
+
+.like-age {
+  font-size: 1rem;
+  color: #888;
+}

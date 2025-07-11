@@ -7,7 +7,7 @@ import Home from './page/home/Home';
 import Login from './page/login/Login';
 import Pwdfind from './page/pwdfind/Pwdfind';
 import Signup from './page/signUp/Signup';
-import Like from './page/like/Like';
+import Like from './page/likePage/Like';
 import Feed from './page/feed/Feed';
 import Mypage from './page/mypage/Mypage';
 import Chat from './page/chat/Chat';
