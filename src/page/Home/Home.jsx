@@ -113,7 +113,7 @@ const Home = () => {
     if (showModal) return; // 이미 모달 열려있으면 중복 실행 막기
     if (type === "x") {
       setDeleteUserId(userId);
-    } else if (type === "hart") {
+    } else if (type === "heart") {
       setLikeUserId(userId);
     }
     setModalType(type);
@@ -149,7 +149,7 @@ const Home = () => {
   const modalCancelBtn = () => {
     if (modalType === "x") {
       setDeleteUserId(null);
-    } else if (modalType === "hart") {
+    } else if (modalType === "heart") {
       setLikeUserId(null);
     }
     setShowModal(false);
@@ -233,7 +233,7 @@ const Home = () => {
             <button className="btn-like"
               onClick={() => {
                 setRequestUserId(user.nickName);
-                setTimeout(() => handleClickModalBtn(user.memId, "hart"), 0);
+                setTimeout(() => handleClickModalBtn(user.memId, "heart"), 0);
               }}>❤</button>
             <button className="btn-chat">★</button>
           </div>
@@ -257,7 +257,7 @@ const Home = () => {
         />
       )}
       {/* 좋아요 모달 */}
-      {showModal && modalType === "hart" && (
+      {showModal && modalType === "heart" && (
         <HomeModal
           message={`${requestUserId}님께 좋아요를 보내시겠습니까?`}
           onConfirm={()=> confirmLike(requestUserId)}
@@ -265,7 +265,7 @@ const Home = () => {
         />
       )}
       {/* 좋아요 확인 알림 모달 */}
-      {showAlertModal && modalType === "hart" && (
+      {showAlertModal && modalType === "heart" && (
         <AlertModal
           message={`${requestUserId}님께 좋아요를 성공적으로 보냈습니다.`}
           onCancel={() => setShowAlertModal(false)}
