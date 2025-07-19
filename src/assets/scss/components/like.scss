@@ -10,6 +10,31 @@
 .like-header {
   border-bottom: 2px solid #e2e2e2;
   padding: 10px 0;
+  position: relative;
+  height: 80px;
+}
+
+.spark-like-tabs {
+  display: flex;
+  gap: 2px;
+  margin: 10px;
+  height: 80px;
+  position: absolute;
+  justify-self: center;
+  bottom: 5px;
+  width: 100%;
+  padding: 5px;
+}
+
+.tab-btn {
+  background-color: white;
+  color: black;
+  height: 90px;
+  font-size: 20px;
+  border-radius: 0px;
+}
+.tab-btn:hover{
+  background-color: rgb(236, 236, 236)
 }
 
 .like-header b {
@@ -69,3 +94,41 @@
   font-size: 1rem;
   color: #888;
 }
+
+
+.like-list-buttons {
+  margin-left: auto;
+  display: flex;
+  gap: 20px;
+  width: 200px;
+  height: 40px;
+}
+
+.like-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.like-btn.accept {
+  background-color: #ff7ca8;
+  color: white;
+}
+
+.like-btn.accept:hover {
+  background-color: #ff3c7d;
+}
+
+.like-btn.reject {
+  background-color: #bebebe;
+  color: white;
+}
+
+.like-btn.reject:hover {
+  background-color: #737373;
+}
+
+
