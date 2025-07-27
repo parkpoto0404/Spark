@@ -5,7 +5,7 @@ import { useAuthContext } from "../../context/AuthContext";
 const Login = () => {
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
-  const { setLoginCheck, setMemberInfo,setStep } = useAuthContext();
+  const { setStep } = useAuthContext();
   const navi = useNavigate();
   
   
@@ -34,15 +34,12 @@ const Login = () => {
 
 
       localStorage.setItem("jwt", accessToken);
-      setLoginCheck(true);
       alert("로그인 성공!");
-      setMemberInfo(data.memberDto);
-
       if (loginStatus === 'A') { // 회원가입 후 처음 로그인시 정보입력페이지로!
         setStep(1);
-        navi("/insertInfo");
+        window.location.href = "/insertInfo";
       } else {
-        navi("/");
+        window.location.href = "/";
       }
 
 

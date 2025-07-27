@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuthContext } from "../../context/AuthContext";
 import { requestLikeList } from './api/like_api';
 
@@ -10,38 +10,36 @@ const Like = () => {
   const { memId, loading } = useAuthContext();
   const [likeList, setLikeList] = useState([]);
 
-  console.log('memId : ', memId, '| type:', typeof memId);
-
-
-
-
-  const sparkLikeList = useCallback(async () => {
-    const token = localStorage.getItem("jwt");
-    try {
-      const data = await requestLikeList(memId, token);
-      setLikeList(data);
-      console.log("좋아요 리스트:", data);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [memId]); // memId가 바뀌면 sparkLikeList도 바뀌도록
-  // 만약 의존성배열에 안넣을시에는 memId가 바뀌어도 sparkLikeList는 초기 memId만 기억하고 있어서
-  // 오래된 ID로 계속 API 요청하게 되는 심각한 버그가 생길 수 있다.
+  console.log('[Like.jsx] 렌더링 - memId : ', memId, '| type:', typeof memId, '| loading:', loading);
 
 
   useEffect(() => {
-    if (!loading && memId) {
-      sparkLikeList();
+    console.log('[Like.jsx] useEffect 진입 - memId:', memId, '| loading:', loading);
+    if (loading) {
+      console.log('[Like.jsx] 아직 로딩 중');
+      return;
     }
-  }, [loading, memId, sparkLikeList]);
-  /*
-    ESLint 경고 : useEffect 의존성 배열에 포함되지 않았기 때문에 
-    React는 useEffect가 정확히 언제 다시 실행될지를 추적해야 한다.
-    만약 sparkLikeList 함수가 변경되면 useEffect를 다시 실행해야 할 수도 있는데, 
-    의존성 배열에 없으면 그걸 감지할 수 없다.
-    따라서 이 오류가 거슬리기에 해결방법은 useCallback 을 사용하여
-    의존성 배열에 추가한다.
-  */
+    if (!memId) {
+      console.log('[Like.jsx] memId 없음, 리스트 불러오지 않음');
+      setLikeList([]);
+      return;
+    }
+    const fetchLikeList = async () => {
+      try {
+        console.log('[Like.jsx] fetchLikeList 실행 - memId:', memId);
+        const data = await requestLikeList(memId); // 최신 구조: token 파라미터 없이
+        setLikeList(data);
+        console.log('[Like.jsx] 좋아요 리스트:', data);
+      } catch (error) {
+        setLikeList([]);
+        console.error('[Like.jsx] 좋아요 리스트 에러:', error);
+      }
+    };
+    fetchLikeList();
+  }, [loading, memId]);
+  
+
+  console.log('[Like.jsx] 렌더링 완료 - likeList:', likeList);
 
 
   return (
