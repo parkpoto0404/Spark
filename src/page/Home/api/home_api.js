@@ -1,12 +1,10 @@
+import { authFetch } from '../../../utils/authFetch';
 
 // 메인 추천리스트 요청 api
-export const requestUserList = async (memberInfo, token) => {
-    const res = await fetch('http://localhost:8888/spark/api/recommend', {
+export const requestUserList = async (memberInfo) => {
+
+    const res = await authFetch('http://localhost:8888/spark/api/recommend', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        },
         body: JSON.stringify(memberInfo),
     });
 
@@ -20,13 +18,9 @@ export const requestUserList = async (memberInfo, token) => {
 
 
 // x버튼 : 추천 제외 요청 api
-export const requestRecommendDelete = async (hiddenId, hiddenTarget, token) => {
-  const res = await fetch('http://localhost:8888/spark/api/recommendDelete', {
+export const requestRecommendDelete = async (hiddenId, hiddenTarget) => {
+  const res = await authFetch('http://localhost:8888/spark/api/recommendDelete', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
-    },
     body: JSON.stringify({ hiddenId, hiddenTarget }),
   });
 
@@ -37,13 +31,9 @@ export const requestRecommendDelete = async (hiddenId, hiddenTarget, token) => {
 
 
 // ♥ 버튼 : 좋아요 신청 api
-export const requestLike = async (requestId, responseId, token) => {
-  const res = await fetch('http://localhost:8888/spark/api/like', {
+export const requestLike = async (requestId, responseId) => {
+  const res = await authFetch('http://localhost:8888/spark/api/like', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
-    },
     body: JSON.stringify({ requestId, responseId }),
   });
 

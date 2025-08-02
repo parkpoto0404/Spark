@@ -7,6 +7,7 @@ import { FiAlertCircle } from "react-icons/fi";
 import HomeModal from '../../component/modal/HomeModal';
 import AlertModal from '../../component/modal/AlertModal';
 import { requestUserList, requestRecommendDelete, requestLike } from './api/home_api';
+import { authFetch } from '../../utils/authFetch';
 
 const Home = () => {
 
@@ -24,9 +25,12 @@ const Home = () => {
 
   // 추천 리스트를 가져오는 함수
   const sparkUserList = async () => {
-    const token = localStorage.getItem("jwt");
     try {
-      const data = await requestUserList(memberInfo, token);
+      const res = await authFetch('http://localhost:8888/spark/api/recommend', {
+        method: 'POST',
+        body: JSON.stringify(memberInfo),
+      });
+      const data = await res.json();
       setRecommendations(data);
       console.log('추천 리스트:', data);
     } catch (error) {

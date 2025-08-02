@@ -2,8 +2,6 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
-let refreshPromise = null; // 리프레시 중이면 공유할 Promise
-
 export const AuthProvider = ({ children }) => {
   const [loginCheck, setLoginCheck] = useState(null);
   const [loading, setLoading] = useState(true); // 화면 렌더링 지연하려는 용도!!
@@ -18,13 +16,12 @@ export const AuthProvider = ({ children }) => {
 
   const initAuth = async () => {
     const accessToken = localStorage.getItem('jwt');
-    //console.log('JWT 초기값:', accessToken);
 
     if (!accessToken) {
       console.log('accessToken 없음');
       setLoginCheck(false);
       setLoading(false);
-      return;
+      return; // return 추가로 아래 코드 실행 방지
     }
 
     try {
@@ -38,40 +35,25 @@ export const AuthProvider = ({ children }) => {
       });
 
       const data = await res.json();
-     // console.log('validate 응답:', data);
+      console.log('validate 응답:', data);
+      console.log('data.valid:', data.valid);
+      console.log('data.memberDto:', data.memberDto);
+      console.log('data.memberDto?.memId:', data.memberDto?.memId);
 
       if (res.ok && data.valid) {
         setLoginCheck(true);
-        setMemberInfo(data.memberDto)
-        setMemId(data.memberDto.memId)
-        console.log("멤버아이디",data.memberDto.memId);
+        setMemberInfo(data.memberDto);
+        setMemId(data.memberDto?.memId); // 옵셔널 체이닝
+        console.log("멤버아이디", data.memberDto?.memId);
       } else {
-        //console.log('토큰 만료 → 리프레시 시도');
-
-        // refresh 요청이 이미 진행 중이라면 대기
-        if (!refreshPromise) {
-            refreshPromise = fetch('http://localhost:8888/spark/api/refresh', {
-            method: 'POST',
-            credentials: 'include',
-          }).then((res) => res.json());
-        }
-
-        const refreshData = await refreshPromise;
-        refreshPromise = null; // Promise 초기화
-
-        if (refreshData.accessToken) {
-          //console.log('새 토큰 저장:', refreshData.accessToken);
-          localStorage.setItem('jwt', refreshData.accessToken);
-          setLoginCheck(true);
-        } else {
-          //console.log('refresh 실패');
-          localStorage.removeItem('jwt');
-          setLoginCheck(false);
-        }
+        localStorage.removeItem('jwt');
+        setLoginCheck(false);
+        console.log('validate 실패 또는 만료:', data);
       }
     } catch (err) {
       localStorage.removeItem('jwt');
       setLoginCheck(false);
+      console.log('validate 에러:', err);
     } finally {
       // 렌더링 타이밍 지연
       await new Promise((res) => setTimeout(res, 100));
@@ -79,10 +61,19 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+
+
+
     useEffect(() => {
-      
+
       initAuth();
+
     }, []);
+
+
+
+
+
 
   return (
     <AuthContext.Provider value={{ loginCheck, 
@@ -93,7 +84,8 @@ export const AuthProvider = ({ children }) => {
                                    setMemberInfo,
                                    step,
                                    setStep,
-                                   memId
+                                   memId,
+                                   setMemId 
                                      }}>  
                                    
                                    {children} </AuthContext.Provider>
