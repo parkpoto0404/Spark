@@ -6,7 +6,6 @@ const Login = () => {
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
   const { setStep } = useAuthContext();
-  const navi = useNavigate();
   
   
 
