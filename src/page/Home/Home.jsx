@@ -18,6 +18,7 @@ const Home = () => {
   const [starUserId, setStarUserId] = useState(null); // 별 버튼 유저 ID 저장용
   const [requestUserId, setRequestUserId] = useState(); // 좋아요 응답 유저 아이디
   const [showAlertModal,setShowAlertModal] = useState(false); // 모달 확인메시지 알림용
+  const [errorMessage,setErrorMessage] = useState(false); // 오류 메시지 상태 관리용
   const navi = useNavigate();
   const location = useLocation();
 
@@ -82,30 +83,38 @@ const Home = () => {
 
 
   // 추천제외 모달 확인 버튼 눌렀을 때 실제 삭제 함수 호출
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (deleteUserId) {
-      handleUserAction(requestRecommendDelete, deleteUserId, "추천 제외 처리 중 오류:");
-      setShowAlertModal(true);
+      const result = await handleUserAction(requestRecommendDelete, deleteUserId, "추천 제외 처리 중 오류:");
+      if (result) {
+       setShowAlertModal(true); 
+      }
     }
     setShowModal(false);
     setDeleteUserId(null);
   };
 
   // 좋아요 모달 확인 버튼 눌렀을 때 실제 삭제 함수 호출
-  const confirmLike = () => {
+  const confirmLike = async () => {
     if (likeUserId) {
-      handleUserAction(requestLike, likeUserId, "좋아요 처리 중 오류:");
-      setShowAlertModal(true);
+      const result = await handleUserAction(requestLike, likeUserId, "좋아요 처리 중 오류:");
+      if (result) {
+       setShowAlertModal(true); 
+      }
     }
     setShowModal(false);
     setLikeUserId(null);
   };
 
   // 별 모달 확인 버튼 눌렀을 때 실제 삭제 함수 호출
-  const confirmStar = () => {
+  const confirmStar = async () => {
     if (starUserId) {
-      handleUserAction(requestUserInterest, starUserId, "별 처리 중 오류:");
-      setShowAlertModal(true);
+      const result = await handleUserAction(requestUserInterest, starUserId, "별 처리 중 오류:");
+      if (result) {
+       setShowAlertModal(true); 
+      }else{
+        setErrorMessage(true);
+      }
     }
     setShowModal(false);
     setStarUserId(null);
@@ -257,6 +266,13 @@ const Home = () => {
       {showAlertModal && modalType === "star" && (
         <AlertModal
           message={`${requestUserId}님을 관심목록에 추가했습니다.`}
+          onCancel={() => setShowAlertModal(false)}
+        />
+      )}
+      {/* 오류 알림 모달 */}
+      {errorMessage && (
+        <AlertModal
+          message={`오류 발생! 다시 시도해주세요`}
           onCancel={() => setShowAlertModal(false)}
         />
       )}

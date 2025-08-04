@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { requestUserList, requestRecommendDelete, requestLike } from '../api/home_api';
+import { requestUserList} from '../api/home_api';
 
 export function useHomeActions(memberInfo) {
   const [recommendations, setRecommendations] = useState([]);
@@ -21,8 +21,10 @@ export function useHomeActions(memberInfo) {
     try {
       await apiFunc(memberInfo.memId, targetUserId);
       setRecommendations((prev) => prev.filter((user) => user.memId !== targetUserId));
+      return true;
     } catch (error) {
       console.error(errorMsg, error);
+      return false;
     }
   };
 
