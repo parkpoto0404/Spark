@@ -273,7 +273,7 @@ const Home = () => {
       {errorMessage && (
         <AlertModal
           message={`오류 발생! 다시 시도해주세요`}
-          onCancel={() => setShowAlertModal(false)}
+          onCancel={() => setErrorMessage(false)}
         />
       )}
 
