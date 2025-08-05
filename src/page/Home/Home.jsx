@@ -6,72 +6,29 @@ import { PiBagSimpleFill } from "react-icons/pi";
 import { FiAlertCircle } from "react-icons/fi";
 import HomeModal from '../../component/modal/HomeModal';
 import AlertModal from '../../component/modal/AlertModal';
-import { requestUserList, requestRecommendDelete, requestLike } from './api/home_api';
-import { authFetch } from '../../utils/authFetch';
+import { requestUserList, requestRecommendDelete, requestLike,requestUserInterest } from './api/home_api';
+import { useHomeActions } from './hooks/useHomeActions';
 
 const Home = () => {
-
   const { memberInfo, loading } = useAuthContext();
-  const [recommendations, setRecommendations] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState(); // 모달 타입 (추천제외,좋아요,관심)
   const [deleteUserId, setDeleteUserId] = useState(null);  // 추천제외 할 유저 ID 저장용
   const [likeUserId, setLikeUserId] = useState(null);  // 좋아요 유저 ID 저장용
+  const [starUserId, setStarUserId] = useState(null); // 별 버튼 유저 ID 저장용
   const [requestUserId, setRequestUserId] = useState(); // 좋아요 응답 유저 아이디
   const [showAlertModal,setShowAlertModal] = useState(false); // 모달 확인메시지 알림용
+  const [errorMessage,setErrorMessage] = useState(false); // 오류 메시지 상태 관리용
   const navi = useNavigate();
   const location = useLocation();
 
-
-  // 추천 리스트를 가져오는 함수
-  const sparkUserList = async () => {
-    try {
-      const res = await authFetch('http://localhost:8888/spark/api/recommend', {
-        method: 'POST',
-        body: JSON.stringify(memberInfo),
-      });
-      const data = await res.json();
-      setRecommendations(data);
-      console.log('추천 리스트:', data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-
-
-  // 추천 제외 핸들러
-  const handleRecommendDelete = async (userId) => { // userId 는 사용자가 클릭한 유저의 id
-
-    const token = localStorage.getItem("jwt");
-    try {
-      await requestRecommendDelete(memberInfo.memId, userId, token);
-      setRecommendations((prev) => prev.filter((user) => user.memId !== userId));
-    } catch (error) {
-      console.error("추천 제외 처리 중 오류:", error);
-    }
-
-  }
-
-
-
-  // 좋아요 신청 핸들러
-  const handleRequestLike = async (userId) => {
-
-    const token = localStorage.getItem("jwt");
-
-    try {
-      await requestLike(memberInfo.memId, userId, token);
-      setRecommendations((prev) => prev.filter((user) => user.memId !== userId));
-
-    } catch (error) {
-      console.error("싫어요 처리 중 오류:", error);
-
-    }
-
-  }
-
-
+  // 커스텀 훅 사용
+  const {
+    recommendations,
+    setRecommendations,
+    fetchRecommendations,
+    handleUserAction
+  } = useHomeActions(memberInfo);
 
 
 
@@ -96,7 +53,7 @@ const Home = () => {
       }, 100); // 100ms 정도 딜레이
 
     } else {
-      sparkUserList(); // 없으면 새로 요청 
+      fetchRecommendations(); // 없으면 새로 요청 
       setTimeout(() => {
         window.scrollTo(0, 0); // 위에 세션을 삭제해줌으로써 새로고침시 스크롤 초기화
       }, 100); // 100ms 정도 딜레이
@@ -108,10 +65,6 @@ const Home = () => {
 
 
 
-
-
-
-
   // X , 하트, 별 버튼 클릭 시 모달 띄우기
   const handleClickModalBtn = (userId, type) => {
     if (showModal) return; // 이미 모달 열려있으면 중복 실행 막기
@@ -119,6 +72,8 @@ const Home = () => {
       setDeleteUserId(userId);
     } else if (type === "heart") {
       setLikeUserId(userId);
+    } else if (type === "star") {
+      setStarUserId(userId);
     }
     setModalType(type);
     setShowModal(true);
@@ -128,23 +83,41 @@ const Home = () => {
 
 
   // 추천제외 모달 확인 버튼 눌렀을 때 실제 삭제 함수 호출
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (deleteUserId) {
-      handleRecommendDelete(deleteUserId);
-      setShowAlertModal(true);
+      const result = await handleUserAction(requestRecommendDelete, deleteUserId, "추천 제외 처리 중 오류:");
+      if (result) {
+       setShowAlertModal(true); 
+      }
     }
     setShowModal(false);
     setDeleteUserId(null);
   };
 
   // 좋아요 모달 확인 버튼 눌렀을 때 실제 삭제 함수 호출
-  const confirmLike = () => {
+  const confirmLike = async () => {
     if (likeUserId) {
-      handleRequestLike(likeUserId);
-      setShowAlertModal(true);
+      const result = await handleUserAction(requestLike, likeUserId, "좋아요 처리 중 오류:");
+      if (result) {
+       setShowAlertModal(true); 
+      }
     }
     setShowModal(false);
     setLikeUserId(null);
+  };
+
+  // 별 모달 확인 버튼 눌렀을 때 실제 삭제 함수 호출
+  const confirmStar = async () => {
+    if (starUserId) {
+      const result = await handleUserAction(requestUserInterest, starUserId, "별 처리 중 오류:");
+      if (result) {
+       setShowAlertModal(true); 
+      }else{
+        setErrorMessage(true);
+      }
+    }
+    setShowModal(false);
+    setStarUserId(null);
   };
 
 
@@ -155,13 +128,15 @@ const Home = () => {
       setDeleteUserId(null);
     } else if (modalType === "heart") {
       setLikeUserId(null);
+    } else if (modalType === "star") {
+      setStarUserId(null);
     }
     setShowModal(false);
   };
 
 
   useEffect(() => { // 모달 나올시 외부 스크롤 막기
-    if (showModal||showAlertModal) {
+    if (showModal || showAlertModal || errorMessage) {
       document.body.style.overflow = 'hidden';  // 스크롤 차단
     } else {
       document.body.style.overflow = 'auto';    // 스크롤 복원
@@ -170,7 +145,7 @@ const Home = () => {
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [showModal,showAlertModal]);
+  }, [showModal,showAlertModal,errorMessage]);
 
 
 
@@ -178,12 +153,12 @@ const Home = () => {
 
 
 
-  const goDetailPage = (user) => {
+  const goDetailPage = (user) => { // 상세페이지로 이동
     navi('/detail', {
-      state: {
+      state: { 
         user,
-        recommendations,
-        scrollY: window.scrollY || 1,
+        recommendations, // 추천 리스트
+        scrollY: window.scrollY || 1, // 현재 스크롤 위치 저장
       }
     }) // 객체형식으로 user 정보를 보낼 수 있음
   }
@@ -239,7 +214,11 @@ const Home = () => {
                 setRequestUserId(user.nickName);
                 setTimeout(() => handleClickModalBtn(user.memId, "heart"), 0);
               }}>❤</button>
-            <button className="btn-chat">★</button>
+
+            <button className="btn-chat" onClick={() => {
+                setRequestUserId(user.nickName);
+                setTimeout(() => handleClickModalBtn(user.memId, "star"), 0);
+              }}>★</button>
           </div>
         </div>
 
@@ -273,6 +252,28 @@ const Home = () => {
         <AlertModal
           message={`${requestUserId}님께 좋아요를 성공적으로 보냈습니다.`}
           onCancel={() => setShowAlertModal(false)}
+        />
+      )}
+      {/* 별 모달 */}
+      {showModal && modalType === "star" && (
+        <HomeModal
+          message={`${requestUserId}님을 관심목록에 추가하시겠습니까?`}
+          onConfirm={() => confirmStar(requestUserId)}
+          onCancel={modalCancelBtn}
+        />
+      )}
+      {/* 별 확인 알림 모달 */}
+      {showAlertModal && modalType === "star" && (
+        <AlertModal
+          message={`${requestUserId}님을 관심목록에 추가했습니다.`}
+          onCancel={() => setShowAlertModal(false)}
+        />
+      )}
+      {/* 오류 알림 모달 */}
+      {errorMessage && (
+        <AlertModal
+          message={`오류 발생! 다시 시도해주세요`}
+          onCancel={() => setErrorMessage(false)}
         />
       )}
 

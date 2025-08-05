@@ -41,3 +41,15 @@ export const requestLike = async (requestId, responseId) => {
     throw new Error('좋아요 요청 실패');
   }
 };
+
+// ★ 버튼 : 관심목록 추가 api
+export const requestUserInterest = async (imUser, imTarget) => {
+  const res = await authFetch('http://localhost:8888/spark/api/interestMem', {
+    method: 'POST',
+    body: JSON.stringify({ imUser, imTarget }),
+  });
+
+  if (!res.ok) {
+    throw new Error('관심목록 요청 실패');
+  }
+};
