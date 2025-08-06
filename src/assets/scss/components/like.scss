@@ -33,8 +33,10 @@
   font-size: 20px;
   border-radius: 0px;
 }
-.tab-btn:hover{
-  background-color: rgb(236, 236, 236)
+.tab-btn:hover,
+.tab-btn.active {
+  background-color: rgb(236, 236, 236);
+  color: black;
 }
 
 .like-header b {

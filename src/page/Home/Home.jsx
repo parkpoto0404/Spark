@@ -19,7 +19,7 @@ const Home = () => {
   const [requestUserId, setRequestUserId] = useState(); // 좋아요 응답 유저 아이디
   const [showAlertModal,setShowAlertModal] = useState(false); // 모달 확인메시지 알림용
   const [errorMessage,setErrorMessage] = useState(false); // 오류 메시지 상태 관리용
-  const navi = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
 
   // 커스텀 훅 사용
@@ -39,7 +39,7 @@ const Home = () => {
     if (loading || !memberInfo) return;
 
     if (!memberInfo.nickName) {
-      navi('/insertInfo'); // 닉네임이 없다면 정보입력페이지로!
+      navigate('/insertInfo'); // 닉네임이 없다면 정보입력페이지로!
       return;
     }
 
@@ -60,7 +60,7 @@ const Home = () => {
 
     }
 
-  }, [loading, memberInfo, navi, location.state, location]);
+  }, [loading, memberInfo, navigate, location.state, location]);
 
 
 
@@ -154,7 +154,7 @@ const Home = () => {
 
 
   const goDetailPage = (user) => { // 상세페이지로 이동
-    navi('/detail', {
+    navigate('/detail', {
       state: { 
         user,
         recommendations, // 추천 리스트
