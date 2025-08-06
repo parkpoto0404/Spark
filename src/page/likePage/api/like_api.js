@@ -1,16 +1,42 @@
 import { authFetch } from '../../../utils/authFetch';
 
-// 메인 추천리스트 요청 api
-export const requestLikeList = async (memId) => {
-    const res = await authFetch('http://localhost:8888/spark/api/me/likeList', {
+// 보낸 좋아요 리스트 api
+export const requestSendLikeList = async (memId) => {
+    const res = await authFetch('http://localhost:8888/spark/api/me/send/likeList', {
         method: 'POST',
         body: JSON.stringify({ memId }),
     });
-    console.log("보내는 memId:", memId);
-    console.log("보내는 JSON.stringify:", JSON.stringify({ memId }));
 
     if (!res.ok) {
-        throw new Error('좋아요 리스트를 가져오는 데 실패했습니다.');
+        throw new Error('보낸 좋아요 리스트를 가져오는 데 실패했습니다.');
+    }
+
+    return await res.json();
+};
+
+// 관심목록 요청 api
+export const requestInterestList = async (memId) => {
+    const res = await authFetch('http://localhost:8888/spark/api/me/interestList', {
+        method: 'POST',
+        body: JSON.stringify({ memId }),
+    });
+
+    if (!res.ok) {
+        throw new Error('관심목록을 가져오는 데 실패했습니다.');
+    }
+
+    return await res.json();
+};
+
+// 받은 좋아요 리스트 요청 api
+export const requestGetLikeList = async (memId) => {
+    const res = await authFetch('http://localhost:8888/spark/api/me/get/likeList', {
+        method: 'POST',
+        body: JSON.stringify({ memId }),
+    });
+
+    if (!res.ok) {
+        throw new Error('받은 좋아요를 가져오는 데 실패했습니다.');
     }
 
     return await res.json();
