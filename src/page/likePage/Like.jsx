@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthContext } from "../../context/AuthContext";
-import { requestSendLikeList, requestInterestList, requestGetLikeList } from './api/like_api';
+import { requestSendLikeList, requestInterestList, requestGetLikeList, requestLikeYes } from './api/like_api';
+import AlertModal from '../../component/modal/AlertModal'; 
+import HomeModal from '../../component/modal/HomeModal';
 
 const Like = () => {
   const { memId, loading } = useAuthContext();
@@ -8,6 +10,10 @@ const Like = () => {
   const [getLikeList, setGetLikeList] = useState([]); // 받은 좋아요
   const [interestList, setInterestList] = useState([]); // 관심목록
   const [sendLikeList, setSendLikeList] = useState([]); // 보낸 좋아요
+  const [showModal, setShowModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false); // 오류 메시지 상태 관리용
+  const [successShowModal, setSuccessShowModal] = useState(false); // 성공 메시지 모달
+  const [requestUser, setRequestUser] = useState(null);
 
   // 받은 좋아요 리스트 fetch
   useEffect(() => {
@@ -15,7 +21,6 @@ const Like = () => {
     const fetchGet = async () => {
       try {
         const data = await requestGetLikeList(memId);
-        console.log("[받은 좋아요 API 응답]", data);
         setGetLikeList(data);
       } catch (e) {
         setGetLikeList([]);
@@ -30,7 +35,6 @@ const Like = () => {
     const fetchInterest = async () => {
       try {
         const data = await requestInterestList(memId);
-        console.log("[관심목록 API 응답]", data);
         setInterestList(data);
       } catch (e) {
         setInterestList([]);
@@ -45,7 +49,6 @@ const Like = () => {
     const fetchSend = async () => {
       try {
         const data = await requestSendLikeList(memId);
-        console.log("[보낸 좋아요 API 응답]", data);
         setSendLikeList(data);
       } catch (e) {
         setSendLikeList([]);
@@ -59,6 +62,31 @@ const Like = () => {
   if (activeTab === 'get') currentList = getLikeList;
   else if (activeTab === 'interest') currentList = interestList;
   else if (activeTab === 'send') currentList = sendLikeList;
+
+
+  const handleLikeYes = async (requestId, responseId) => {
+    try {
+      const res = await requestLikeYes(requestId, responseId);
+      // 성공적으로 처리되면 해당 유저를 리스트에서 제거
+      setGetLikeList(prev => prev.filter(user => user.memId !== requestId));
+      setSuccessShowModal(true);
+    } catch (e) {
+      setSuccessShowModal(false);
+    }
+  }
+
+   useEffect(() => { // 모달 나올시 외부 스크롤 막기
+      if (showModal || successShowModal || errorMessage) {
+        document.body.style.overflow = 'hidden';  // 스크롤 차단
+      } else {
+        document.body.style.overflow = 'auto';    // 스크롤 복원
+      }
+  
+      return () => {
+        document.body.style.overflow = 'auto';
+      };
+    }, [showModal, successShowModal, errorMessage]);
+
 
   return (
     <div className="like-contain">
@@ -96,13 +124,16 @@ const Like = () => {
               <span className="like-list-buttons">
                 <button
                   className="like-btn accept"
-                  onClick={() => console.log(`수락: ${likeUser.nickName}`)}
+                  onClick={() => {
+                    setRequestUser(likeUser);
+                    setShowModal(true);
+                  }}
                 >
-                  좋아요
+                  수락
                 </button>
                 <button
                   className="like-btn reject"
-                  onClick={() => console.log(`거절: ${likeUser.nickName}`)}
+                  onClick={() => setShowModal(true)}
                 >
                   관심없음
                 </button>
@@ -112,7 +143,7 @@ const Like = () => {
               <span className="like-list-buttons">
                 <button
                   className="like-btn reject"
-                  onClick={() => console.log(`삭제: ${likeUser.nickName}`)}
+                  onClick={() => setShowModal(true)}
                 >
                   삭제
                 </button>
@@ -121,6 +152,30 @@ const Like = () => {
           </div>
         </div>
       ))}
+      {showModal && (
+        <HomeModal
+          message={requestUser ? `${requestUser.nickName}님의 좋아요를 수락하시겠습니까?` : ''}
+          onCancel={() => setShowModal(false)}
+          onConfirm={() => {
+            handleLikeYes(requestUser.memId, memId);
+            setSuccessShowModal(true);
+            setShowModal(false);
+          }}
+        />
+      )}
+      {successShowModal && (
+        <AlertModal
+          message={'성공적으로 수락하였습니다.'}
+          onCancel={() => setSuccessShowModal(false)}
+        />
+      )}
+      {/* 오류 알림 모달 */}
+      {errorMessage && (
+        <AlertModal
+          message={`오류 발생! 다시 시도해주세요`}
+          onCancel={() => setErrorMessage(false)}
+        />
+      )}
     </div>
   );
 };
