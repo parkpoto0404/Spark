@@ -116,7 +116,7 @@ const InsertInfo = () => {
                     setMemberInfo(resdata); // 정보입력 후 화면은 step11 페이지에서 머무르고 있음 
                                             // 최신멤버로 업데이트를 하지않으면 제대로 이동이 안됨
                     alert('정보입력 완료')
-                    navi('/');
+                    window.location.href = '/';
                 }else{
                     console.log('업로드 실패')
                 }

@@ -1,58 +1,79 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthContext } from "../../context/AuthContext";
-import { requestLikeList } from './api/like_api';
-
-
+import { requestSendLikeList, requestInterestList, requestGetLikeList } from './api/like_api';
 
 const Like = () => {
-
-
   const { memId, loading } = useAuthContext();
-  const [likeList, setLikeList] = useState([]);
+  const [activeTab, setActiveTab] = useState('get'); // 탭 상태/받은 좋아요 기본값
+  const [getLikeList, setGetLikeList] = useState([]); // 받은 좋아요
+  const [interestList, setInterestList] = useState([]); // 관심목록
+  const [sendLikeList, setSendLikeList] = useState([]); // 보낸 좋아요
 
-  console.log('[Like.jsx] 렌더링 - memId : ', memId, '| type:', typeof memId, '| loading:', loading);
-
-
+  // 받은 좋아요 리스트 fetch
   useEffect(() => {
-    console.log('[Like.jsx] useEffect 진입 - memId:', memId, '| loading:', loading);
-    if (loading) {
-      console.log('[Like.jsx] 아직 로딩 중');
-      return;
-    }
-    if (!memId) {
-      console.log('[Like.jsx] memId 없음, 리스트 불러오지 않음');
-      setLikeList([]);
-      return;
-    }
-    const fetchLikeList = async () => {
+    if (loading || !memId) return;
+    const fetchGet = async () => {
       try {
-        console.log('[Like.jsx] fetchLikeList 실행 - memId:', memId);
-        const data = await requestLikeList(memId); // 최신 구조: token 파라미터 없이
-        setLikeList(data);
-        console.log('[Like.jsx] 좋아요 리스트:', data);
-      } catch (error) {
-        setLikeList([]);
-        console.error('[Like.jsx] 좋아요 리스트 에러:', error);
+        const data = await requestGetLikeList(memId);
+        console.log("[받은 좋아요 API 응답]", data);
+        setGetLikeList(data);
+      } catch (e) {
+        setGetLikeList([]);
       }
     };
-    fetchLikeList();
+    fetchGet();
   }, [loading, memId]);
-  
 
-  console.log('[Like.jsx] 렌더링 완료 - likeList:', likeList);
+  // 관심목록 fetch 
+  useEffect(() => {
+    if (loading || !memId) return;
+    const fetchInterest = async () => {
+      try {
+        const data = await requestInterestList(memId);
+        console.log("[관심목록 API 응답]", data);
+        setInterestList(data);
+      } catch (e) {
+        setInterestList([]);
+      }
+    };
+    fetchInterest();
+  }, [loading, memId]);
 
+  // 보낸 좋아요 fetch 
+  useEffect(() => {
+    if (loading || !memId) return;
+    const fetchSend = async () => {
+      try {
+        const data = await requestSendLikeList(memId);
+        console.log("[보낸 좋아요 API 응답]", data);
+        setSendLikeList(data);
+      } catch (e) {
+        setSendLikeList([]);
+      }
+    };
+    fetchSend();
+  }, [loading, memId]);
+
+  // 탭별 리스트 선택
+  let currentList = [];
+  if (activeTab === 'get') currentList = getLikeList;
+  else if (activeTab === 'interest') currentList = interestList;
+  else if (activeTab === 'send') currentList = sendLikeList;
 
   return (
     <div className="like-contain">
       <div className="like-header">
-        <div class="spark-like-tabs">
-          <button class="tab-btn active">받은 좋아요</button>
-          <button class="tab-btn">관심목록</button>
-          <button class="tab-btn">보낸 좋아요</button>
+        <div className="spark-like-tabs">
+          <button className={`tab-btn${activeTab === 'get' ? ' active' : ''}`} onClick={() => setActiveTab('get')}>받은 좋아요</button>
+          <button className={`tab-btn${activeTab === 'interest' ? ' active' : ''}`} onClick={() => setActiveTab('interest')}>관심목록</button>
+          <button className={`tab-btn${activeTab === 'send' ? ' active' : ''}`} onClick={() => setActiveTab('send')}>보낸 좋아요</button>
         </div>
       </div>
 
-      {likeList.map((likeUser, key) => (
+      {currentList.length === 0 && (
+        <div style={{ textAlign: 'center', marginTop: '40px', color: '#aaa' }}>리스트가 없습니다.</div>
+      )}
+      {currentList.map((likeUser, key) => (
         <div className="like-list-box" key={key}>
           <div className="list-list-info">
             <span className="like-list-img-contain">
@@ -60,11 +81,9 @@ const Like = () => {
                 <img
                   src={`http://localhost:8888${likeUser.proFile}`}
                   alt="프로필 이미지"
-                  onError={(e) => { // 오류가 발생했을 때 실행되는 이벤트핸들러
-                    e.target.onerror = null; // 무한 루프 방지 
-                    // 대체 이미지마저 없을 경우 
-                    // onError 실행됨 → 다시 대체 → 또 오류 → 무한 반복!
-                    e.target.src = '/spark_logo.png'; // 이미지 없을때 대체 이미지
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = '/spark_logo.png';
                   }}
                 />
               </span>
@@ -73,27 +92,35 @@ const Like = () => {
               <span className="like-name"><b>{likeUser.nickName}</b></span>
               <span className="like-age">{likeUser.age} 세</span>
             </span>
-            <span className="like-list-buttons">
-              <button
-                className="like-btn accept"
-                onClick={() => console.log(`수락: ${likeUser.nickName}`)}
-              >
-                좋아요
-              </button>
-              <button
-                className="like-btn reject"
-                onClick={() => console.log(`거절: ${likeUser.nickName}`)}
-              >
-                관심없음
-              </button>
-            </span>
+            {activeTab === 'get' && (
+              <span className="like-list-buttons">
+                <button
+                  className="like-btn accept"
+                  onClick={() => console.log(`수락: ${likeUser.nickName}`)}
+                >
+                  좋아요
+                </button>
+                <button
+                  className="like-btn reject"
+                  onClick={() => console.log(`거절: ${likeUser.nickName}`)}
+                >
+                  관심없음
+                </button>
+              </span>
+            )}
+            {activeTab === 'send' && (
+              <span className="like-list-buttons">
+                <button
+                  className="like-btn reject"
+                  onClick={() => console.log(`삭제: ${likeUser.nickName}`)}
+                >
+                  삭제
+                </button>
+              </span>
+            )}
           </div>
         </div>
       ))}
-
-
-
-
     </div>
   );
 };
