@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthContext } from "../../context/AuthContext";
-import { requestSendLikeList, requestInterestList, requestGetLikeList, requestLikeYes } from './api/like_api';
+import { requestSendLikeList, requestInterestList, requestGetLikeList, requestLikeYes, requestLikeNo } from './api/like_api';
 import { requestLike as homeRequestLike } from '../home/api/home_api';
 import AlertModal from '../../component/modal/AlertModal'; 
 import CommonModal from '../../component/modal/CommonModal';
@@ -135,7 +135,10 @@ const Like = () => {
                 </button>
                 <button
                   className="like-btn reject"
-                  onClick={() => setShowModal(true)}
+                  onClick={() => {
+                    setRequestUser(likeUser);
+                    setShowModal('reject');
+                  }}
                 >
                   관심없음
                 </button>
@@ -174,7 +177,7 @@ const Like = () => {
           </div>
         </div>
       ))}
-      {showModal && (
+      {showModal === true && (
         <CommonModal
           message={requestUser ? (
             activeTab === 'get'
@@ -197,6 +200,21 @@ const Like = () => {
               setSuccessShowModal(true);
               setShowModal(false);
             }
+          }}
+        />
+      )}
+      {showModal === 'reject' && (
+        <CommonModal
+          message={requestUser ? `${requestUser.nickName}님의 좋아요를 거절하시겠습니까?` : ''}
+          onCancel={() => setShowModal(false)}
+          onConfirm={async () => {
+            try {
+              await requestLikeNo(requestUser.memId, memId);
+              setGetLikeList(prev => prev.filter(user => user.memId !== requestUser.memId));
+            } catch (e) {
+              setErrorMessage(true);
+            }
+            setShowModal(false);
           }}
         />
       )}

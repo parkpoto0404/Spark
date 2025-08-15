@@ -58,3 +58,19 @@ export const requestLikeYes = async (requestId,responseId) => {
 
     return await res.json();
 };
+
+// 받은 좋아요 거절 api
+export const requestLikeNo = async (requestId,responseId) => {
+    const res = await authFetch('http://localhost:8888/spark/api/me/likeNo', {
+        method: 'POST',
+        body: JSON.stringify({ requestId, responseId }),
+    });
+    console.log('requestId,responseId', requestId, responseId);
+    console.log('res', res);
+
+    if (!res.ok) {
+        throw new Error('받은 좋아요 거절요청 실패했습니다.');
+    }
+
+    return await res.json();
+};
