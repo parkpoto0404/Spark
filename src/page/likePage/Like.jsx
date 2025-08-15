@@ -202,6 +202,9 @@ const Like = () => {
               try {
                 await homeRequestLike(memId, requestUser.memId);
                 setInterestList(prev => prev.filter(user => user.memId !== requestUser.memId));
+                // 보낸 좋아요 리스트도 즉시 갱신
+                const sendList = await requestSendLikeList(memId);
+                setSendLikeList(sendList);
                 setSuccessShowModal(true);
               } catch (e) {
                 setErrorMessage(true);
