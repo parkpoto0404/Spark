@@ -74,3 +74,51 @@ export const requestLikeNo = async (requestId,responseId) => {
 
     return await res.json();
 };
+
+// 관심목록 좋아요 요청 api
+export const requestInterestLikeSend = async (imUser,imTarget) => {
+    const res = await authFetch('http://localhost:8888/spark/api/me/interestLikeSend', {
+        method: 'POST',
+        body: JSON.stringify({ imUser, imTarget }),
+    });
+    console.log('imUser,imTarget', imUser, imTarget);
+    console.log('res', res);
+
+    if (!res.ok) {
+        throw new Error('관심 목록에 좋아요 전송 실패했습니다.');
+    }
+
+    return await res.json();
+};
+
+// 관심목록 삭제  api
+export const requestInterestDelete = async (imUser,imTarget) => {
+    const res = await authFetch('http://localhost:8888/spark/api/me/interestDelete', {
+        method: 'POST',
+        body: JSON.stringify({ imUser, imTarget }),
+    });
+    console.log('imUser,imTarget', imUser, imTarget);
+    console.log('res', res);
+
+    if (!res.ok) {
+        throw new Error('관심 목록에 좋아요 전송 실패했습니다.');
+    }
+
+    return await res.json();
+};
+
+// 보낸 좋아요 삭제  api
+export const requestSendLikeDelete = async (requestId,responseId) => {
+    const res = await authFetch('http://localhost:8888/spark/api/me/likeList/delete', {
+        method: 'POST',
+        body: JSON.stringify({ requestId, responseId }),
+    });
+    console.log('requestId,responseId', requestId, responseId);
+    console.log('res', res);
+
+    if (!res.ok) {
+        throw new Error('보낸 좋아요 삭제 실패했습니다.');
+    }
+
+    return await res.json();
+};

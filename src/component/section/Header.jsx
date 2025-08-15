@@ -8,8 +8,6 @@ const Header = () => {
   const navigate = useNavigate();
   const { step, setStep } = useAuthContext();
 
-  const { recommendations, scrollY } = location.state || {}; // 메인에서 봤던 리스트와 스크롤위치
-
   const isSignupPage = location.pathname === '/signup';
   const insertInfoPage = location.pathname === '/insertInfo';
   const mainPage = location.pathname === '/';
@@ -17,38 +15,19 @@ const Header = () => {
   const likePage = location.pathname === '/like';
   const myPage = location.pathname === '/myPage';
 
-  
-
-
-
-  const goBackToHome = () => { // 상세보기에서 메인으로 뒤로가기 핸들러
-
-    navigate("/", {
-      state: {
-        recommendations: recommendations,
-        scrollY: scrollY,
-      },
-    });
-    sessionStorage.setItem('backFromDetail', 'true');
+  // 상세보기에서 뒤로가기(탭 복귀)
+  const goBackToLikeTab = () => {
+    if (location.state && location.state.fromTab) {
+      navigate('/like', { state: { fromTab: location.state.fromTab } });
+    } else {
+      navigate(-1);
+    }
   };
 
-  /* 브라우저 뒤로가기 시에도 가능한지 확인하고 구현해볼것!
-  navigate(-1, {
-      state: {
-        recommendations: recommendations,
-        scrollY: scrollY,
-      },
-    });
-    sessionStorage.setItem('backFromDetail', 'true');
+  // 정보입력페이지 뒤로가기 핸들러
+  const handleBack = () => {
+    setStep(prev => prev > 1 ? prev - 1 : prev);
   };
-  *///
-
-
-
-  const handleBack = () => { // 정보입력페이지 뒤로가기 핸들러
-    setStep(prev => prev > 1 ? prev - 1 : prev); // 1보다 클 때만 감소
-
-  }
 
   return (
     <div className='header'>
@@ -66,7 +45,7 @@ const Header = () => {
       {detailPage && (
         <div style={{ display: 'flex' }}>
           <div className='back-btn'>
-            <span onClick={() => goBackToHome()}>
+            <span onClick={goBackToLikeTab}>
               <h2>〈 </h2>
             </span>
           </div>
@@ -96,10 +75,6 @@ const Header = () => {
           <span style={{ alignContent: 'center' }}></span>
         </div>
       )}
-
-
-
-
     </div>
 
   );

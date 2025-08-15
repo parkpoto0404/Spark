@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthContext } from "../../context/AuthContext";
-import { requestSendLikeList, requestInterestList, requestGetLikeList, requestLikeYes, requestLikeNo } from './api/like_api';
+import { requestSendLikeList, requestInterestList, requestGetLikeList, requestLikeYes, requestLikeNo, requestInterestDelete, requestSendLikeDelete } from './api/like_api';
 import { requestLike as homeRequestLike } from '../home/api/home_api';
 import AlertModal from '../../component/modal/AlertModal'; 
 import CommonModal from '../../component/modal/CommonModal';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Like = () => {
   const { memId, loading } = useAuthContext();
-  const [activeTab, setActiveTab] = useState('get'); // 탭 상태/받은 좋아요 기본값
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState(() => {
+    if (location.state && location.state.fromTab) return location.state.fromTab;
+    return 'get';
+  }); // 탭 상태/받은 좋아요 기본값
   const [getLikeList, setGetLikeList] = useState([]); // 받은 좋아요
   const [interestList, setInterestList] = useState([]); // 관심목록
   const [sendLikeList, setSendLikeList] = useState([]); // 보낸 좋아요
@@ -106,7 +112,7 @@ const Like = () => {
       {currentList.map((likeUser, key) => (
         <div className="like-list-box" key={key}>
           <div className="list-list-info">
-            <span className="like-list-img-contain">
+            <span className="like-list-img-contain" onClick={() => navigate('/detail', { state: { user: likeUser, fromTab: activeTab } })} style={{ cursor: 'pointer' }}>
               <span className="like-profile-img">
                 <img
                   src={`http://localhost:8888${likeUser.proFile}`}
@@ -157,7 +163,10 @@ const Like = () => {
                 </button>
                 <button
                   className="like-btn reject"
-                  onClick={() => setShowModal(true)}
+                  onClick={() => {
+                    setRequestUser(likeUser);
+                    setShowModal('interest-delete');
+                  }}
                 >
                   삭제
                 </button>
@@ -168,7 +177,10 @@ const Like = () => {
                 <button
                   style={{ width: '100px', marginLeft: '60px' }}
                   className="like-btn reject"
-                  onClick={() => setShowModal(true)}
+                  onClick={() => {
+                    setRequestUser(likeUser);
+                    setShowModal('send-delete');
+                  }}
                 >
                   삭제
                 </button>
@@ -211,6 +223,36 @@ const Like = () => {
             try {
               await requestLikeNo(requestUser.memId, memId);
               setGetLikeList(prev => prev.filter(user => user.memId !== requestUser.memId));
+            } catch (e) {
+              setErrorMessage(true);
+            }
+            setShowModal(false);
+          }}
+        />
+      )}
+      {showModal === 'interest-delete' && (
+        <CommonModal
+          message={requestUser ? `${requestUser.nickName}님을 관심목록에서 삭제하시겠습니까?` : ''}
+          onCancel={() => setShowModal(false)}
+          onConfirm={async () => {
+            try {
+              await requestInterestDelete(memId, requestUser.memId);
+              setInterestList(prev => prev.filter(user => user.memId !== requestUser.memId));
+            } catch (e) {
+              setErrorMessage(true);
+            }
+            setShowModal(false);
+          }}
+        />
+      )}
+      {showModal === 'send-delete' && (
+        <CommonModal
+          message={requestUser ? `${requestUser.nickName}님에게 보낸 좋아요를 삭제하시겠습니까?` : ''}
+          onCancel={() => setShowModal(false)}
+          onConfirm={async () => {
+            try {
+              await requestSendLikeDelete(memId, requestUser.memId);
+              setSendLikeList(prev => prev.filter(user => user.memId !== requestUser.memId));
             } catch (e) {
               setErrorMessage(true);
             }
