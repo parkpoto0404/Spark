@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthContext } from "../../context/AuthContext";
-import { requestSendLikeList, requestInterestList, requestGetLikeList, requestLikeYes, requestLikeNo, requestInterestDelete, requestSendLikeDelete } from './api/like_api';
-import { requestLike as homeRequestLike } from '../home/api/home_api';
+import { requestInterestLikeSend,requestSendLikeList, requestInterestList, requestGetLikeList, requestLikeYes, requestLikeNo, requestInterestDelete, requestSendLikeDelete } from './api/like_api';
 import AlertModal from '../../component/modal/AlertModal'; 
 import CommonModal from '../../component/modal/CommonModal';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -200,7 +199,7 @@ const Like = () => {
           onConfirm={async () => {
             if (activeTab === 'interest') {
               try {
-                await homeRequestLike(memId, requestUser.memId);
+                await requestInterestLikeSend(memId, requestUser.memId);
                 setInterestList(prev => prev.filter(user => user.memId !== requestUser.memId));
                 // 보낸 좋아요 리스트도 즉시 갱신
                 const sendList = await requestSendLikeList(memId);
