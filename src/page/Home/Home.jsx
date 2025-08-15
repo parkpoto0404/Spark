@@ -4,9 +4,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { IoLocationSharp } from "react-icons/io5";
 import { PiBagSimpleFill } from "react-icons/pi";
 import { FiAlertCircle } from "react-icons/fi";
-import HomeModal from '../../component/modal/HomeModal';
+import CommonModal from '../../component/modal/CommonModal';
 import AlertModal from '../../component/modal/AlertModal';
-import { requestUserList, requestRecommendDelete, requestLike,requestUserInterest } from './api/home_api';
+import { requestRecommendDelete, requestLike,requestUserInterest } from './api/home_api';
 import { useHomeActions } from './hooks/useHomeActions';
 
 const Home = () => {
@@ -226,7 +226,7 @@ const Home = () => {
 
       {/* 추천 제외 모달 */}
       {showModal && modalType === "x" && (
-        <HomeModal
+        <CommonModal
           message={`${requestUserId}님이 더 이상 추천되지 않습니다. 삭제 하시겠습니까?`}
           onConfirm={() => confirmDelete(requestUserId)}
           onCancel={modalCancelBtn}
@@ -241,7 +241,7 @@ const Home = () => {
       )}
       {/* 좋아요 모달 */}
       {showModal && modalType === "heart" && (
-        <HomeModal
+        <CommonModal
           message={`${requestUserId}님께 좋아요를 보내시겠습니까?`}
           onConfirm={()=> confirmLike(requestUserId)}
           onCancel={modalCancelBtn}
@@ -256,7 +256,7 @@ const Home = () => {
       )}
       {/* 별 모달 */}
       {showModal && modalType === "star" && (
-        <HomeModal
+        <CommonModal
           message={`${requestUserId}님을 관심목록에 추가하시겠습니까?`}
           onConfirm={() => confirmStar(requestUserId)}
           onCancel={modalCancelBtn}

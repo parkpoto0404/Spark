@@ -1,4 +1,4 @@
-const HomeModal = ({ message, onConfirm, onCancel }) => {
+const CommonModal = ({ message, onConfirm, onCancel }) => {
     return (
       <div className='modal-overlay' >
         <div className='modal' >
@@ -11,7 +11,6 @@ const HomeModal = ({ message, onConfirm, onCancel }) => {
       </div>
     );
   };
-  
-  
-export default HomeModal
 
+
+export default CommonModal;
