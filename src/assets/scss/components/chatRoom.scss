@@ -1,0 +1,174 @@
+.chat-room-container {
+    max-width: 430px;
+    margin: 32px auto;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #f2f2f2;
+}
+
+.chat-room-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 20px 10px 12px;
+    border-bottom: 1.5px solid #ff3c7d;
+    background: #fff;
+}
+
+.chat-room-back-btn {
+    background: none;
+    border: none;
+    padding: 0 10px 0 0;
+    margin-right: 2px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    outline: none;
+    height: 40px;
+    font-size: 1.7rem;
+    color: #ff3c7d;
+    font-weight: 700;
+    user-select: none;
+}
+
+.chat-room-back-btn svg {
+    display: block;
+}
+
+.chat-room-profile-thumb {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-room-profile-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.chat-room-nickname {
+    font-weight: 600;
+    color: #ff3c7d;
+    font-size: 1.08rem;
+}
+
+.chat-room-header-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 20px 10px 20px;
+    background: #fff;
+    border-bottom: 1px solid #f7f7f7;
+}
+
+.chat-room-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: #fafbfc;
+    padding: 0 0 70px 0;
+}
+
+.chat-room-empty {
+    color: #aaa;
+    text-align: center;
+    margin: auto;
+    font-size: 1.1rem;
+}
+
+.chat-room-input-wrap {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-width: 430px;
+    margin: 0 auto;
+    background: #fff;
+    border-top: 1px solid #f2f2f2;
+    padding: 12px 10px 12px 10px;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.chat-room-input {
+    flex: 2;
+    min-width: 330px;
+    min-height: 60px;
+    border: 1.5px solid #ff3c7d;
+    border-radius: 18px;
+    padding: 10px 12px;
+    font-size: 1rem;
+    outline: none;
+    background: #fff;
+}
+
+.chat-room-send-btn {
+    background: #ff3c7d;
+    color: #fff;
+    border: none;
+    border-radius: 18px;
+    padding: 0 12px;
+    font-size: 0.98rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    height: 60px;
+    min-width: 80px;
+}
+
+/* 카톡 느낌의 말풍선 예시 */
+.chat-message-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 18px 12px 0 12px;
+    overflow-y: auto;
+    max-height: 55vh;
+}
+
+.chat-message-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.chat-message-item.me {
+    align-items: flex-end;
+}
+
+.chat-bubble {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 18px;
+    background: #ffecf4;
+    color: #222;
+    font-size: 1.01rem;
+    max-width: 70%;
+    word-break: break-all;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.chat-message-item.me .chat-bubble {
+    background: #ff3c7d;
+    color: #fff;
+}
+
+.chat-bubble-time {
+    font-size: 0.85rem;
+    color: #bbb;
+    margin-top: 2px;
+    margin-left: 6px;
+    margin-right: 6px;
+}

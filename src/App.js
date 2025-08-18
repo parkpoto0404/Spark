@@ -18,7 +18,7 @@ import Main from './component/section/Main';
 import Footer from './component/section/Footer';
 import PrivateRoute from './component/route/PrivateRoute';
 import Detail from './page/detail/Detail';
-
+import ChatRoom from './page/chat/ChatRoom';
 
 
 function HeaderLayout() {
@@ -101,6 +101,16 @@ function AppRoutes() {
           </PrivateRoute>
         }
       />
+      <Route
+        path='/chat/room/:clNo'
+        element={
+          <PrivateRoute loginCheck={loginCheck} loading={loading}>
+            <ChatRoom />
+          </PrivateRoute>
+        }
+      />
+
+      
 
       <Route path='*' element={<Not />} />
     </Routes>
