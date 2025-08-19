@@ -5,10 +5,11 @@ const Main = ({children}) => {
 
   const location = useLocation();
   const loginPage = location.pathname === '/login';
+  const chatRoomPage = location.pathname.startsWith('/chat/room');
 
 
   return (
-    <div className={`${loginPage ? 'main-login' : 'main'}`} >
+    <div className={`${loginPage ? 'main-login' : 'main'} ${chatRoomPage ? 'chat-room' : ''}`} >
       {children}
     </div>
   )

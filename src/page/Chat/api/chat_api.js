@@ -13,3 +13,14 @@ export const requestChatList = async (memId) => {
 
   return await res.json();
 };
+
+// 채팅 메세지 리스트 불러오기 API
+export const requestChatMessages = async (clNo) => {
+  const res = await authFetch(`http://localhost:8888/spark/chat/messageList?clNo=${clNo}`);
+
+  if (!res.ok) {
+    throw new Error('채팅 메세지를 불러오는 데 실패했습니다.');
+  }
+
+  return await res.json();
+};
