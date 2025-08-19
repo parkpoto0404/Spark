@@ -22,7 +22,7 @@ const ChatRoom = () => {
             try {
                 const data = await requestChatMessages(clNo);
                 console.log('채팅 메시지 데이터:', data);
-                // 서버에서 받아온 메시지도 UI 구조로 변환
+                
                 const mapped = data.map(msg => ({
                     fromMe: msg.messageId === memId,
                     text: msg.messageContent || msg.text || '',
@@ -51,14 +51,14 @@ const ChatRoom = () => {
         client.onConnect = () => {
             console.log('✅ STOMP CONNECTED');
             client.subscribe(`/sub/chat/${clNo}`, (message) => {
-                console.log('📩 수신:', message.body);
+                console.log('수신:', message.body);
                 const msg = JSON.parse(message.body);
                 // 메시지 구조 통일: fromMe, text, time
                 const normalizedMsg = {
                     fromMe: msg.messageId === memId, // 내 메시지 여부
                     text: msg.messageContent || msg.text || '',
                     time: msg.time || new Date().toLocaleTimeString(),
-                    // 필요시 추가 필드
+                   
                     ...msg
                 };
                 setMessages((prev) => [...prev, normalizedMsg]);
@@ -86,7 +86,7 @@ const ChatRoom = () => {
             nickName: nickName || '',
             messageContent: input,
             proFile: proFile || null,
-            messageId: memId, // 필요시 실제 ID로 변경
+            messageId: memId, 
         };
         console.log('[채팅 전송] pub:', `/pub/chat/${clNo}`, payload);
         stompClientRef.current.publish({
