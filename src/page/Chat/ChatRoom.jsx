@@ -24,8 +24,8 @@ const ChatRoom = () => {
                 console.log('채팅 메시지 데이터:', data);
                 
                 const mapped = data.map(msg => ({
-                    fromMe: msg.messageId === memId,
-                    text: msg.messageContent || msg.text || '',
+                    fromMe: msg.memId === memId ? true : false,
+                    text: msg.msgContent || msg.text || '',
                     time: msg.time || new Date().toLocaleTimeString(),
                     ...msg
                 }));
@@ -56,7 +56,7 @@ const ChatRoom = () => {
                 // 메시지 구조 통일: fromMe, text, time
                 const normalizedMsg = {
                     fromMe: msg.messageId === memId, // 내 메시지 여부
-                    text: msg.messageContent || msg.text || '',
+                    text: msg.messageContent || msg.msgContent || msg.text || '',
                     time: msg.time || new Date().toLocaleTimeString(),
                    
                     ...msg
